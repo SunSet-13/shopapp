@@ -1,4 +1,4 @@
-## Cấu trúc dự án
+## 1. Cấu trúc dự án
 
 ```shell
 src 
@@ -6,7 +6,7 @@ src
 
 ```
 
-## Cài đặt Sequelize và migrate các bảng User, News, Category, Brand (04)
+## 2. Cài đặt Sequelize và migrate các bảng User, News, Category, Brand (04)
 
 1. Thư viện cần cài
 ``` javascript
@@ -28,6 +28,10 @@ src
     npx sequelize-cli db:migrate:undo:all 
 
 ```
+## 3. Tạo bảng với khóa chính khóa ngoại (05)
+    - Bổ sung khóa ngoại vào 'static associate(models)' trong các models liên quuan và 'async up(queryInterface, Sequelize) {
+    await queryInterface.createTable' trong migration
+    - bên 1 thì có hasMany bên nhiều có belongTo
 
 
 

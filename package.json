@@ -1,10 +1,9 @@
 {
   "name": "shop-app",
   "version": "1.0.0",
-   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect ./server.js",
+    "start": "nodemon --exec babel-node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,14 +20,15 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "joi": "^17.13.3",
     "mysql2": "^3.14.1",
     "nodemon": "^3.1.10",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.27.4",
-    "@babel/node": "^7.27.1",
-    "@babel/preset-env": "^7.27.2"
+    "@babel/core": "^7.22.0",
+    "@babel/node": "^7.22.0",
+    "@babel/preset-env": "^7.22.0"
   }
 }

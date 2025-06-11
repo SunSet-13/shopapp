@@ -2,14 +2,55 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
 export async function getBrand(req, res) {
-    res.status(200).json({
-        message: 'Lấy danh sách thương hiệu thành công',
+  const {Op} = Sequelize;
+  
+    const { search = '', page = 1 } = req.query;
+    const pageSize = 5;
+    const offset = (page - 1) * pageSize;
+
+    let whereClause = {};
+    if (search.trim() !== '') {
+      whereClause = {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          
+        ]
+      };
+    }
+
+    const [brands, totalCount] = await Promise.all([
+      db.Brand.findAll({
+        where: whereClause,
+        limit: pageSize,
+        offset: offset
+      }),
+      db.Brand.count({
+        where: whereClause
+      })
+    ]);
+
+    return res.status(200).json({
+      message: 'Lấy danh sách thương hiệu thành công',
+      data: brands,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalCount / pageSize),
+      totalBrands: totalCount
     });
+  
+  
 }
 
 export async function getBrandById(req, res) {
+  const {id} = req.params;
+  const brand = await db.Brand.findByPk(id);
+  if(!brand) {
+    return res.status(404).json({
+      message: 'Thương hiệu không tìm thấy',
+    });
+  }
     res.status(200).json({
         message: 'Lấy thông tin thương hiệu thành công',
+        data: brand,
     });
 }
 

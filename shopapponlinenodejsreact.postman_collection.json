@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "095a38fd-c804-4a39-99c0-49c11b7fb9b5",
+		"_postman_id": "55d32a9d-d54c-4102-aa4f-e9ed1ba896ed",
 		"name": "shopapponlinenodejsreact",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43647518",
-		"_collection_link": "https://sunset100.postman.co/workspace/Sunset100's-Workspace~053c15b1-c2aa-4d30-8ec6-9ffca84272e9/collection/43647518-095a38fd-c804-4a39-99c0-49c11b7fb9b5?action=share&source=collection_link&creator=43647518"
+		"_collection_link": "https://sunset100.postman.co/workspace/Sunset100's-Workspace~053c15b1-c2aa-4d30-8ec6-9ffca84272e9/collection/43647518-55d32a9d-d54c-4102-aa4f-e9ed1ba896ed?action=share&source=collection_link&creator=43647518"
 	},
 	"item": [
 		{
@@ -23,12 +23,18 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{API_PREFIX}}/products",
+							"raw": "{{API_PREFIX}}/products?search=iphone",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
 								"products"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "iphone"
+								}
 							]
 						}
 					},
@@ -36,17 +42,29 @@
 				},
 				{
 					"name": "/products/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{API_PREFIX}}/products/3",
+							"raw": "{{API_PREFIX}}/products/9",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
 								"products",
-								"3"
+								"9"
 							]
 						}
 					},
@@ -75,14 +93,22 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"name\": \"iPhone 15\",\r\n    \"price\": 25990000,\r\n    \"oldprice\": 28990000,\r\n    \"image\": \"\",\r\n    \"description\": \"iPhone 15 với cổng USB-C, chip A16 Bionic và camera nâng cấp.\",\r\n    \"specification\": \"Super Retina XDR 6.1 inch; A16 Bionic; RAM 6GB; ROM 128GB; Camera 48MP + 12MP; Trước 12MP; Pin 3349mAh.\",\r\n    \"buyturn\": 325,\r\n    \"quantity\": 65,\r\n    \"brand_id\": 4,\r\n    \"category_id\": 3\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{API_PREFIX}}/products/",
+							"raw": "{{API_PREFIX}}/products",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
-								"products",
-								""
+								"products"
 							]
 						}
 					},
@@ -124,12 +150,18 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{API_PREFIX}}/categories",
+							"raw": "{{API_PREFIX}}/categories?search=bảng",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
 								"categories"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "bảng"
+								}
 							]
 						}
 					},
@@ -183,7 +215,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Danh mục mới\"\n}"
+							"raw": "{\n  \"name\": \"Máy tính bảng\"\n}"
 						},
 						"url": {
 							"raw": "{{API_PREFIX}}/categories",
@@ -225,234 +257,338 @@
 				}
 			]
 		},
-		 {
-      "name": "brands",
-      "item": [
-        {
-          "name": "api/brands",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/brands",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["brands"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/brands/:id",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/brands/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["brands", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/brands",
-          "request": {
-            "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Thương hiệu mới\"\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/brands",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["brands"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/brands/:id",
-          "request": {
-            "method": "PUT",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"name\": \"Thương hiệu cập nhật\"\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/brands/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["brands", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/brands/:id",
-          "request": {
-            "method": "DELETE",
-            "url": {
-              "raw": "{{API_PREFIX}}/brands/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["brands", "1"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-
-    {
-      "name": "orders",
-      "item": [
-        {
-          "name": "api/orders",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/orders",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["orders"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/orders/:id",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/orders/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["orders", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/orders",
-          "request": {
-            "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": 123,\n  \"orderDate\": \"2025-06-04\"\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/orders",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["orders"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/orders/:id",
-          "request": {
-            "method": "PUT",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"status\": \"Đã giao\"\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/orders/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["orders", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/orders/:id",
-          "request": {
-            "method": "DELETE",
-            "url": {
-              "raw": "{{API_PREFIX}}/orders/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["orders", "1"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-
-    {
-      "name": "orderDetails",
-      "item": [
-        {
-          "name": "api/order-details",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/order-details",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["order-details"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/order-details/:id",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{API_PREFIX}}/order-details/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["order-details", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/order-details",
-          "request": {
-            "method": "POST",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"orderId\": 1,\n  \"productId\": 2,\n  \"quantity\": 3\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/order-details",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["order-details"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/order-details/:id",
-          "request": {
-            "method": "PUT",
-            "header": [{"key": "Content-Type", "value": "application/json"}],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 1,\n  \"quantity\": 5\n}"
-            },
-            "url": {
-              "raw": "{{API_PREFIX}}/order-details/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["order-details", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/order-details/:id",
-          "request": {
-            "method": "DELETE",
-            "url": {
-              "raw": "{{API_PREFIX}}/order-details/1",
-              "host": ["{{API_PREFIX}}"],
-              "path": ["order-details", "1"]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  
-
+		{
+			"name": "brands",
+			"item": [
+				{
+					"name": "api/brands",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/brands",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/brands/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/brands/3",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"brands",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/brands",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Huawei\"\n\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/brands",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/brands/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Thương hiệu cập nhật\"\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/brands/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"brands",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/brands/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/brands/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"brands",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "api/orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/orders",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/orders/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": 123,\n  \"orderDate\": \"2025-06-04\"\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/orders",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"status\": \"Đã giao\"\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/orders/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/orders/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orderDetails",
+			"item": [
+				{
+					"name": "api/order-details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/order-details",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"order-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/order-details/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/order-details/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"order-details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/order-details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orderId\": 1,\n  \"productId\": 2,\n  \"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/order-details",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"order-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/order-details/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"quantity\": 5\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/order-details/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"order-details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/order-details/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/order-details/1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"order-details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
 	]
 }

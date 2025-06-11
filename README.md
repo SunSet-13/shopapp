@@ -140,4 +140,43 @@ export async function insertProduct(req, res) {
   };
   export default validate;
   ```
+  ## 9.Xây Dựng Chức Năng Tìm Kiếm và Phân Trang cho Product, Category, Brand (13)
+  - Sử dụng Op của Sequelize
+  - Ví dụ 1 hàm xử lí phân trang và tìm kiếm 
+  ```javascript
+  const {Op} = Sequelize;
+  export async function getProduct(req, res) {
+  //const products = await db.Product.findAll()
+  const {search = '',page =1} = req.query;
+  const pageSize = 6;
+  const offset = (page - 1) * pageSize;//5, trang 2 bắt đầu từ sp số 6
+  let whereClause = {};
+    if(search.trim() !== '') {
+      whereClause = {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          { description: { [Op.like]: `%${search}%` } },
+          { specification: { [Op.like]: `%${search}%` } }
+        ]
+      }
+    }
+  const [products, totalProducts] = await Promise.all([
+    db.Product.findAll({
+      where: whereClause,
+      limit: pageSize,
+      offset: offset
+    }),
+    db.Product.count({
+      where: whereClause
+    })
+  ]);
+  res.status(200).json({
+    message: "Lấy danh sách sản phẩm thành công",
+    data: products,
+    currentPage: parseInt(page,10),
+    totalPages: Math.ceil(totalProducts / pageSize),//11sp = 3 trang
+    totalProducts
+  });
+  }
+  ```
 

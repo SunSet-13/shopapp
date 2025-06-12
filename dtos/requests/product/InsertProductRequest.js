@@ -23,7 +23,7 @@ class InsertProductRequest {
     this.category_id = data.category_id;
   }
   static validate(data) {
-    const schema = Joi.object({
+     const schema = Joi.object({
       name: Joi.string().required(),
       price: Joi.number().positive().required(),
       oldprice: Joi.number().positive(),
@@ -31,7 +31,7 @@ class InsertProductRequest {
       description: Joi.string().optional(),
       specification: Joi.string().required(),
       buyturn: Joi.number().integer().min(0),
-      quantity: Joi.number().integer().min(0),
+      quantity: Joi.number().integer().positive().required(), // Thêm .positive()
       brand_id: Joi.number().integer().required(),
       category_id: Joi.number().integer().required(),
     });

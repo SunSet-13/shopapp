@@ -1,6 +1,7 @@
 
 import { Sequelize } from "sequelize";
 import db from "../models/index";
+const {Op} = Sequelize;
 export async function getBrand(req, res) {
   const {Op} = Sequelize;
   
@@ -72,13 +73,52 @@ export async function insertBrand(req, res) {
 
 
 export async function deleteBrand(req, res) {
-    res.status(200).json({
-        message: 'Xóa thương hiệu thành công',
+  const { id } = req.params;
+
+  try {
+    const deleted = await db.Brand.destroy({
+      where: { id },
     });
+
+    if (deleted) {
+      return res.status(200).json({
+        message: "Xóa thương hiệu thành công",
+      });
+    }
+
+    return res.status(404).json({
+      message: "Thương hiệu không tìm thấy",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Lỗi máy chủ",
+      error: error.message,
+    });
+  }
 }
 
 export async function updateBrand(req, res) {
-    res.status(200).json({
-        message: 'Cập nhật thương hiệu thành công',
+  const { id } = req.params;
+
+  try {
+    const updatedBrand = await db.Brand.update(req.body, {
+      where: { id },
     });
+
+    if (updatedBrand[0] > 0) {
+      return res.status(200).json({
+        message: "Cập nhật thương hiệu thành công",
+      });
+    }
+
+    return res.status(404).json({
+      message: "Thương hiệu không tìm thấy",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Lỗi máy chủ",
+      error: error.message,
+    });
+  }
 }
+

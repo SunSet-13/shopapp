@@ -9,7 +9,8 @@ import * as OrderDetailController from "../controllers/OrderDetailController.js"
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
-import InsertProductRequest from "../dtos/requests/InsertProductRequest.js";
+import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
+import UpdateProductRequest from "../dtos/requests/product/UpdateProductRequest.js";
 
 export function routes(app) {
   // Products
@@ -20,7 +21,9 @@ export function routes(app) {
     asyncHandler(ProductController.insertProduct)
   );
   router.delete("/products/:id", asyncHandler(ProductController.deleteProduct));
-  router.put("/products/:id", asyncHandler(ProductController.updateProduct));
+  router.put("/products/:id", 
+    validate(UpdateProductRequest),
+    asyncHandler(ProductController.updateProduct));
 
   // Categories
   router.get("/categories", asyncHandler(CategoryController.getCategory));

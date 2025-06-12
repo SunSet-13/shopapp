@@ -4,7 +4,7 @@ const validate = (requestType) => {
     if (error) {
       return res.status(400).json({
         message: "Validation error",
-        error: error.details[0]?.message, // Return the first validation error message
+        error: error.details[0].message, // Return the first validation error message
       });
     }
     next(); // If validation passes, proceed to the next middleware or route handler

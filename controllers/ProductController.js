@@ -1,38 +1,38 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index.js";
-import InsertProductRequest from "../dtos/requests/InsertProductRequest.js";
-const {Op} = Sequelize;
+import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
+const { Op } = Sequelize;
 export async function getProduct(req, res) {
   //const products = await db.Product.findAll()
-  const {search = '',page =1} = req.query;
+  const { search = "", page = 1 } = req.query;
   const pageSize = 6;
-  const offset = (page - 1) * pageSize;//5, trang 2 bắt đầu từ sp số 6
+  const offset = (page - 1) * pageSize; //5, trang 2 bắt đầu từ sp số 6
   let whereClause = {};
-    if(search.trim() !== '') {
-      whereClause = {
-        [Op.or]: [
-          { name: { [Op.like]: `%${search}%` } },
-          { description: { [Op.like]: `%${search}%` } },
-          { specification: { [Op.like]: `%${search}%` } }
-        ]
-      }
-    }
+  if (search.trim() !== "") {
+    whereClause = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${search}%` } },
+        { description: { [Op.like]: `%${search}%` } },
+        { specification: { [Op.like]: `%${search}%` } },
+      ],
+    };
+  }
   const [products, totalProducts] = await Promise.all([
     db.Product.findAll({
       where: whereClause,
       limit: pageSize,
-      offset: offset
+      offset: offset,
     }),
     db.Product.count({
-      where: whereClause
-    })
+      where: whereClause,
+    }),
   ]);
   res.status(200).json({
     message: "Lấy danh sách sản phẩm thành công",
     data: products,
-    currentPage: parseInt(page,10),
-    totalPages: Math.ceil(totalProducts / pageSize),//11sp = 3 trang
-    totalProducts
+    currentPage: parseInt(page, 10),
+    totalPages: Math.ceil(totalProducts / pageSize), //11sp = 3 trang
+    totalProducts,
   });
 }
 export async function getProductById(req, res) {
@@ -45,50 +45,52 @@ export async function getProductById(req, res) {
   }
   res.status(200).json({
     message: "Lấy thông tin sản phẩm thành công",
-    data: product
+    data: product,
   });
 }
 
 export async function insertProduct(req, res) {
-  
-
   // console.log(JSON.stringify(req.body))
   const product = await db.Product.create(req.body);
   return res.status(201).json({
-    message: 'Thêm mới sản phẩm thành công',
-    data: product
+    message: "Thêm mới sản phẩm thành công",
+    data: product,
   });
 }
 
-// export async function insertProduct(req, res) {
-//   const { error } = InsertProductRequest.validate(req.body);
-//   if(error) {
-//     return res.status(400).json({
-//       message: 'Thêm sản phẩm mới thất bại',
-//       error: error.details[0]?.message
-//     });
-//   }
-//   try {
-//     const product = await db.Product.create(req.body);
-//     return res.status(201).json({
-//       message: "Thêm sản phẩm thành công", 
-//       data: product,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: "Lỗi khi thêm sản phẩm",
-//       error,
-//     });
-//   }
-// }
 export async function deleteProduct(req, res) {
-  res.status(200).json({
-    message: "Xóa sản phẩm thành công",
+  const { id } = req.params;
+
+  const deleted = await db.Product.destroy({
+    where: { id },
+  });
+
+  if (deleted) {
+    return res.status(200).json({
+      message: "Xóa sản phẩm thành công",
+    });
+  }
+
+  return res.status(404).json({
+    message: "Sản phẩm không tìm thấy",
   });
 }
 export async function updateProduct(req, res) {
-  res.status(200).json({
-    message: "Cập nhật sản phẩm thành công",
+  const { id } = req.params;
+
+  const updatedProduct = await db.Product.update(req.body, {
+    where: { id },
+  });
+
+  if (updatedProduct[0] > 0) {
+    // Sequelize trả về mảng [số lượng bản ghi đã cập nhật]
+    return res.status(200).json({
+      message: "Cập nhật sản phẩm thành công",
+    });
+  }
+
+  return res.status(404).json({
+    message: "Sản phẩm không tìm thấy",
   });
 }
 /*
@@ -299,4 +301,4 @@ export async function updateProduct(req, res) {
   }
 ]
 
-*/ 
+*/

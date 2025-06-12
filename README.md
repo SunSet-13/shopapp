@@ -180,3 +180,13 @@ export async function insertProduct(req, res) {
   }
   ```
 
+## 10. Viết các phương thức Update, Delete cho Product, Order (15)
+- Xử lí trong ProductController.
+-  Update phải đúng định dạng, xử lí trong UpdateProductRequest
+-  Bọc hàm kiểm tra dữ liệu trong routes 
+```javascript
+  router.delete("/products/:id", asyncHandler(ProductController.deleteProduct));
+  router.put("/products/:id", 
+    validate(UpdateProductRequest),
+    asyncHandler(ProductController.updateProduct));
+```

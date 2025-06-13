@@ -7,6 +7,7 @@ import * as BrandController from "../controllers/BrandController.js";
 import * as OrderController from "../controllers/OrderController.js";
 import * as OrderDetailController from "../controllers/OrderDetailController.js";
 import * as UserController from "../controllers/UserController.js"
+import * as NewsController from "../controllers/NewsController.js"
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -14,8 +15,19 @@ import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.
 import UpdateProductRequest from "../dtos/requests/product/UpdateProductRequest.js";
 import InsertOderRequest from "../dtos/requests/order/InsertOderRequest.js";
 import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
+import InsertNewsRequest from "../dtos/requests/news/InsertNewsRequest.js";
 
 export function routes(app) {
+  //news
+  router.get("/news", asyncHandler(NewsController.getNewsArticle));
+router.get("/news/:id", asyncHandler(NewsController.getNewsArticleById));
+router.post("/news", 
+  validate(InsertNewsRequest), 
+  asyncHandler(NewsController.insertNewsArticle));
+router.put("/news/:id", 
+  //validate(UpdateNewsRequest), 
+  asyncHandler(NewsController.updateNewsArticle));
+router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   //Users
   router.post("/users",
     validate(InsertUserRequest), 

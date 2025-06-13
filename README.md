@@ -211,3 +211,5 @@ export async function insertProduct(req, res) {
 - Lưu ý: 
   Kiểm tra user có tồn tại không trong phần oder
   Kiểm tra email có tồn tại không trong phần user
+## 12.Thêm mới các News và xử lý transactions khi insert nhiều bảng(017)
+- Xử lí trong NewsController, hàm insert, xử lí 1 news có nhiều id sản phẩm

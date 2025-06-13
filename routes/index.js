@@ -6,13 +6,22 @@ import * as CategoryController from "../controllers/CategoryController.js";
 import * as BrandController from "../controllers/BrandController.js";
 import * as OrderController from "../controllers/OrderController.js";
 import * as OrderDetailController from "../controllers/OrderDetailController.js";
+import * as UserController from "../controllers/UserController.js"
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
 import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
 import UpdateProductRequest from "../dtos/requests/product/UpdateProductRequest.js";
+import InsertOderRequest from "../dtos/requests/order/InsertOderRequest.js";
+import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 
 export function routes(app) {
+  //Users
+  router.post("/users",
+    validate(InsertUserRequest), 
+    asyncHandler(UserController.insertUser)
+  );
+
   // Products
   router.get("/products", asyncHandler(ProductController.getProduct));
   router.get("/products/:id", asyncHandler(ProductController.getProductById));
@@ -42,7 +51,9 @@ export function routes(app) {
   // Orders
   router.get("/orders", asyncHandler(OrderController.getOrder));
   router.get("/orders/:id", asyncHandler(OrderController.getOrderById));
-  router.post("/orders", asyncHandler(OrderController.insertOrder));
+  router.post("/orders",
+    validate(InsertOderRequest),
+    asyncHandler(OrderController.insertOrder));
   router.delete("/orders/:id", asyncHandler(OrderController.deleteOrder));
   router.put("/orders/:id", asyncHandler(OrderController.updateOrder));
 

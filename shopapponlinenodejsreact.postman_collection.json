@@ -11,7 +11,31 @@
 			"name": "products",
 			"item": [
 				{
-					"name": "api/products",
+					"name": "api/products all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/products",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/products search",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -41,6 +65,40 @@
 					"response": []
 				},
 				{
+					"name": "api/products search,paging",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/products?search=iphone&page=1",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "iphone"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/products/:id",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -51,6 +109,33 @@
 						"body": {
 							"mode": "raw",
 							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/products/40",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"products",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/:id Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n            \"name\": \"iPhone 14 Pro \",\r\n           \r\n            \"price\": 20990000,\r\n        \r\n            \"oldprice\": 33990000,\r\n            \"image\": \"\",\r\n            \"description\": \"iPhone 14 Pro Max mang đến Dynamic Island, chip A16 Bionic và camera chuyên nghiệp.\",\r\n            \"specification\": \"Màn hình Super Retina XDR 6.7 inch; A16 Bionic; RAM 6GB; ROM 256GB; Camera sau 48MP + 12MP + 12MP; Trước 12MP; Pin 4323mAh.\",\r\n            \"buyturn\": 430,\r\n            \"quantity\": 40,\r\n            \"brand_id\": 4,\r\n            \"category_id\": 3\r\n           \r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,13 +161,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{API_PREFIX}}/products/3",
+							"raw": "{{API_PREFIX}}/products/40",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
 								"products",
-								"3"
+								"40"
 							]
 						}
 					},
@@ -95,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"name\": \"iPhone 15\",\r\n    \"price\": 25990000,\r\n    \"oldprice\": 28990000,\r\n    \"image\": \"\",\r\n    \"description\": \"iPhone 15 với cổng USB-C, chip A16 Bionic và camera nâng cấp.\",\r\n    \"specification\": \"Super Retina XDR 6.1 inch; A16 Bionic; RAM 6GB; ROM 128GB; Camera 48MP + 12MP; Trước 12MP; Pin 3349mAh.\",\r\n    \"buyturn\": 325,\r\n    \"quantity\": 65,\r\n    \"brand_id\": 4,\r\n    \"category_id\": 3\r\n  }",
+							"raw": " {\r\n    \"name\": \"iPhone 15xx11\",\r\n    \"price\": 25990000,\r\n    \"oldprice\": 28990000,\r\n    \"image\": \"\",\r\n    \"description\": \"iPhone 15 với cổng USB-C, chip A16 Bionic và camera nâng cấp.\",\r\n    \"specification\": \"Super Retina XDR 6.1 inch; A16 Bionic; RAM 6GB; ROM 128GB; Camera 48MP + 12MP; Trước 12MP; Pin 3349mAh.\",\r\n    \"buyturn\": 325,\r\n    \"quantity\": 65,\r\n    \"brand_id\": 4,\r\n    \"category_id\": 3\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -418,7 +503,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"customerId\": 123,\n  \"orderDate\": \"2025-06-04\"\n}"
+							"raw": "{\n  \"user_id\": 101,\n  \"status\": 1,\n  \"note\": \"Giao hàng trong giờ hành chính, liên hệ trước khi giao.\",\n  \"total\": 2590000\n}\n"
 						},
 						"url": {
 							"raw": "{{API_PREFIX}}/orders",
@@ -583,6 +668,37 @@
 							"path": [
 								"order-details",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "api/user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"nguyenvana@example.com\",\r\n  \"password\": \"matkhau123\",\r\n  \"name\": \"Nguyễn Văn A\",\r\n  \"role\": 2,\r\n  \"avatar\": \"https://example.com/avatar/avt-nguyenvana.jpg\",\r\n  \"phone\": \"0987654321\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/users",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},

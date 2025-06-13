@@ -190,3 +190,24 @@ export async function insertProduct(req, res) {
     validate(UpdateProductRequest),
     asyncHandler(ProductController.updateProduct));
 ```
+## 11.Viết chức năng thêm mới User và Order, mã hoá mật khẩu với argon2 (016)
+- Làm tương tự như với Product
+- thêm file Response.js trong thư mục response 
+- Với User cần mã hóa mật khẩu trong UserController
+1. Thư viện cần tải
+```javascript
+  yarn add argon2
+```
+2.
+- Thêm xử lý mã hóa mật khẩu trong hàm insertUser trong file UserController
+```javascript
+ const hassedPassword = await argon2.hash("password");
+  const user = await db.User.create({
+    ...req.body,
+    password: hassedPassword,
+  });
+
+```
+- Lưu ý: 
+  Kiểm tra user có tồn tại không trong phần oder
+  Kiểm tra email có tồn tại không trong phần user

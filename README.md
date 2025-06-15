@@ -213,3 +213,18 @@ export async function insertProduct(req, res) {
   Kiểm tra email có tồn tại không trong phần user
 ## 12.Thêm mới các News và xử lý transactions khi insert nhiều bảng(017)
 - Xử lí trong NewsController, hàm insert, xử lí 1 news có nhiều id sản phẩm
+## 13.Các chức năng CRUD cho NewsDetail
+- Làm tương tự như các bảng khác
+- Thêm phần join bảng khi xử lí trong controller
+```javascript
+ db.NewsDetail.findAll({
+      limit: pageSize,
+      offset: offset,
+      in ra tt chi tiết tương đương join bảng trong sql
+      include: [
+      { model: db.News },
+      { model: db.Product },
+      ],
+    }),
+```
+- Khi insert, update phải kiểm tra xem product_id và news_id có tồn tại không vì nó có liên quan đến 2 bảng news và product

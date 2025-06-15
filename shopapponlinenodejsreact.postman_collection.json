@@ -343,6 +343,129 @@
 			]
 		},
 		{
+			"name": "news",
+			"item": [
+				{
+					"name": "api/news",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/news?search=bảng",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "bảng"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/news/3",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/news/3",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Máy tính bảng\"\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/news",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 3,\n  \"name\": \"Danh mục cập nhật\"\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/news",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "brands",
 			"item": [
 				{
@@ -503,7 +626,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"user_id\": 101,\n  \"status\": 1,\n  \"note\": \"Giao hàng trong giờ hành chính, liên hệ trước khi giao.\",\n  \"total\": 2590000\n}\n"
+							"raw": "{\n  \"user_id\": 5,\n  \"status\": 1,\n  \"note\": \"Giao hàng trong giờ hành chính, liên hệ trước khi giao.\",\n  \"total\": 2590000\n}\n"
 						},
 						"url": {
 							"raw": "{{API_PREFIX}}/orders",
@@ -668,6 +791,129 @@
 							"path": [
 								"order-details",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "news_details",
+			"item": [
+				{
+					"name": "api/news-details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/news-details",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news-details/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/news-details/:id",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news-details",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news-details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orderId\": 1,\n  \"productId\": 2,\n  \"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/news-details",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news-details/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"news_id\": 1,\n \"product_id\":33\n}"
+						},
+						"url": {
+							"raw": "{{API_PREFIX}}/news-details/5",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news-details",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/news-details/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_PREFIX}}/news-details/:id",
+							"host": [
+								"{{API_PREFIX}}"
+							],
+							"path": [
+								"news-details",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},

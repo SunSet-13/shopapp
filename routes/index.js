@@ -8,6 +8,7 @@ import * as OrderController from "../controllers/OrderController.js";
 import * as OrderDetailController from "../controllers/OrderDetailController.js";
 import * as UserController from "../controllers/UserController.js"
 import * as NewsController from "../controllers/NewsController.js"
+import * as NewsDetailController from "../controllers/NewsDetailController.js"
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -16,6 +17,7 @@ import UpdateProductRequest from "../dtos/requests/product/UpdateProductRequest.
 import InsertOderRequest from "../dtos/requests/order/InsertOderRequest.js";
 import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 import InsertNewsRequest from "../dtos/requests/news/InsertNewsRequest.js";
+import InsertNewsDetailRequest from "../dtos/requests/newsdetail/InsertNewsDetailRequest.js";
 
 export function routes(app) {
   //news
@@ -75,6 +77,22 @@ router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   router.post("/order-details", asyncHandler(OrderDetailController.insertOrderDetail));
   router.delete("/order-details/:id", asyncHandler(OrderDetailController.deleteOrderDetail));
   router.put("/order-details/:id", asyncHandler(OrderDetailController.updateOrderDetail));
+
+  //news_details
+
+  router.get("/news-details", asyncHandler(NewsDetailController.getNewsDetails));
+router.get("/news-details/:id", asyncHandler(NewsDetailController.getNewsDetailById));
+router.post(
+  "/news-details",
+   validate(InsertNewsDetailRequest),
+  asyncHandler(NewsDetailController.insertNewsDetail)
+);
+router.delete("/news-details/:id", asyncHandler(NewsDetailController.deleteNewsDetail));
+router.put(
+  "/news-details/:id",
+  // validate(UpdateNewsDetailRequest),
+  asyncHandler(NewsDetailController.updateNewsDetail)
+);
 
   // Mount the router to /api
   app.use("/api", router);

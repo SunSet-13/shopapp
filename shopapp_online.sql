@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2025 at 11:22 AM
+-- Generation Time: Jun 15, 2025 at 07:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -136,6 +136,14 @@ CREATE TABLE `news` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`id`, `title`, `image`, `content`, `created_at`, `updated_at`) VALUES
+(1, 'So sánh Samsung Galaxy S24 Ultra và Xiaomi 14: Cuộc đua công nghệ đỉnh cao', 'https://example.com/images/s24-vs-xiaomi14.jpg', 'Trong năm 2025, Samsung và Xiaomi tiếp tục đối đầu nhau với hai siêu phẩm Galaxy S24 Ultra và Xiaomi 14. Cả hai đều mang đến những cải tiến vượt trội về thiết kế, hiệu năng và camera.\n\nGalaxy S24 Ultra gây ấn tượng mạnh với thiết kế khung titan, màn hình Dynamic AMOLED 2X 6.8 inch sắc nét và cụm camera 200MP hỗ trợ zoom 100x. Trong khi đó, Xiaomi 14 không hề kém cạnh khi sở hữu màn hình AMOLED 6.36 inch, hiệu năng từ Snapdragon 8 Gen 3 và hệ thống camera Leica chất lượng.\n\nNgoài ra, thời lượng pin của cả hai máy đều được tối ưu với công nghệ sạc nhanh, mang đến trải nghiệm sử dụng mượt mà trong cả ngày dài.\n\nDù chọn Samsung hay Xiaomi, người dùng đều sẽ có được một chiếc flagship xứng tầm, đáp ứng tốt cả công việc lẫn giải trí.', '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
+(2, 'So sánh Samsung Galaxy S24 Ultra và Xiaomi 14: Cuộc đua công nghệ đỉnh cao', 'https://example.com/images/s24-vs-xiaomi14.jpg', 'Trong năm 2025, Samsung và Xiaomi tiếp tục đối đầu nhau với hai siêu phẩm Galaxy S24 Ultra và Xiaomi 14. Cả hai đều mang đến những cải tiến vượt trội về thiết kế, hiệu năng và camera.\n\nGalaxy S24 Ultra gây ấn tượng mạnh với thiết kế khung titan, màn hình Dynamic AMOLED 2X 6.8 inch sắc nét và cụm camera 200MP hỗ trợ zoom 100x. Trong khi đó, Xiaomi 14 không hề kém cạnh khi sở hữu màn hình AMOLED 6.36 inch, hiệu năng từ Snapdragon 8 Gen 3 và hệ thống camera Leica chất lượng.\n\nNgoài ra, thời lượng pin của cả hai máy đều được tối ưu với công nghệ sạc nhanh, mang đến trải nghiệm sử dụng mượt mà trong cả ngày dài.\n\nDù chọn Samsung hay Xiaomi, người dùng đều sẽ có được một chiếc flagship xứng tầm, đáp ứng tốt cả công việc lẫn giải trí.', '2025-06-15 16:28:42', '2025-06-15 16:28:42');
+
 -- --------------------------------------------------------
 
 --
@@ -149,6 +157,22 @@ CREATE TABLE `news_details` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `news_details`
+--
+
+INSERT INTO `news_details` (`id`, `product_id`, `news_id`, `created_at`, `updated_at`) VALUES
+(1, 18, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
+(2, 23, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
+(3, 28, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
+(5, 33, 1, '2025-06-13 09:50:34', '2025-06-15 17:43:39'),
+(6, 18, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
+(7, 23, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
+(8, 28, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
+(9, 33, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
+(10, 38, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
+(11, 15, 1, '2025-06-15 17:33:49', '2025-06-15 17:33:49');
 
 -- --------------------------------------------------------
 
@@ -165,6 +189,13 @@ CREATE TABLE `orders` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `status`, `note`, `total`, `created_at`, `updated_at`) VALUES
+(1, 5, 1, 'Giao hàng trong giờ hành chính, liên hệ trước khi giao.', 2590000, '2025-06-13 07:59:32', '2025-06-13 07:59:32');
 
 -- --------------------------------------------------------
 
@@ -209,7 +240,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `price`, `oldprice`, `image`, `description`, `specification`, `buyturn`, `quantity`, `brand_id`, `category_id`, `created_at`, `updated_at`) VALUES
-(9, 'Galaxy S22 Ultra', 24990000, 27990000, '', 'Galaxy S22 Ultra với bút S Pen tích hợp, hiệu năng đột phá và khả năng chụp ảnh chuyên nghiệp, là sự kết hợp hoàn hảo giữa điện thoại và máy tính bảng trong một thiết kế sang trọng.', 'Màn hình Dynamic AMOLED 2X 6.8 inch, độ phân giải 3200x1440; Chipset Exynos 2200; RAM 12GB; Bộ nhớ trong 256GB; Camera sau: chính 108MP, ultra-wide 12MP, telephoto 10MP và periscope 10MP; Camera trước: 40MP; Pin 5000 mAh với sạc siêu nhanh.', 320, 85, 1, 3, '2025-06-09 08:27:23', '2025-06-09 08:27:23'),
+(9, 'iPhone 14 Pro ', 20990000, 33990000, '', 'iPhone 14 Pro Max mang đến Dynamic Island, chip A16 Bionic và camera chuyên nghiệp.', 'Màn hình Super Retina XDR 6.7 inch; A16 Bionic; RAM 6GB; ROM 256GB; Camera sau 48MP + 12MP + 12MP; Trước 12MP; Pin 4323mAh.', 430, 40, 4, 3, '2025-06-11 08:10:56', '2025-06-12 17:40:37'),
 (15, 'Galaxy S22 Ultra1', 24990000, 27990000, '', 'Galaxy S22 Ultra với bút S Pen tích hợp, hiệu năng đột phá và khả năng chụp ảnh chuyên nghiệp, là sự kết hợp hoàn hảo giữa điện thoại và máy tính bảng trong một thiết kế sang trọng.', 'Màn hình Dynamic AMOLED 2X 6.8 inch, độ phân giải 3200x1440; Chipset Exynos 2200; RAM 12GB; Bộ nhớ trong 256GB; Camera sau: chính 108MP, ultra-wide 12MP, telephoto 10MP và periscope 10MP; Camera trước: 40MP; Pin 5000 mAh với sạc siêu nhanh.', 320, 85, 1, 3, '2025-06-09 08:58:03', '2025-06-09 08:58:03'),
 (18, 'Galaxy S22 Ultra2', 24990000, 27990000, '', 'Galaxy S22 Ultra với bút S Pen tích hợp, hiệu năng đột phá và khả năng chụp ảnh chuyên nghiệp, là sự kết hợp hoàn hảo giữa điện thoại và máy tính bảng trong một thiết kế sang trọng.', 'Màn hình Dynamic AMOLED 2X 6.8 inch, độ phân giải 3200x1440; Chipset Exynos 2200; RAM 12GB; Bộ nhớ trong 256GB; Camera sau: chính 108MP, ultra-wide 12MP, telephoto 10MP và periscope 10MP; Camera trước: 40MP; Pin 5000 mAh với sạc siêu nhanh.', 320, 85, 1, 3, '2025-06-09 09:16:46', '2025-06-09 09:16:46'),
 (20, 'Galaxy S22 Ultra3', 24990000, 27990000, '', 'Galaxy S22 Ultra với bút S Pen tích hợp, hiệu năng đột phá và khả năng chụp ảnh chuyên nghiệp, là sự kết hợp hoàn hảo giữa điện thoại và máy tính bảng trong một thiết kế sang trọng.', 'Màn hình Dynamic AMOLED 2X 6.8 inch, độ phân giải 3200x1440; Chipset Exynos 2200; RAM 12GB; Bộ nhớ trong 256GB; Camera sau: chính 108MP, ultra-wide 12MP, telephoto 10MP và periscope 10MP; Camera trước: 40MP; Pin 5000 mAh với sạc siêu nhanh.', 320, 85, 1, 3, '2025-06-09 09:17:57', '2025-06-09 09:17:57'),
@@ -275,6 +306,13 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`, `name`, `role`, `avatar`, `phone`, `created_at`, `updated_at`) VALUES
+(5, 'nguyenvana@example.com', '$argon2id$v=19$m=65536,t=3,p=4$7nokDvd4fzlTGzWaWfYBww$ERnqUKJh/sQ3YZOMcQB7brGozeTCDgfw7aoSCaXudYc', 'Nguyễn Văn A', 2, 'https://example.com/avatar/avt-nguyenvana.jpg', 987654321, '2025-06-13 07:49:16', '2025-06-13 07:49:16');
 
 --
 -- Indexes for dumped tables
@@ -407,19 +445,19 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `news_details`
 --
 ALTER TABLE `news_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `order_details`
@@ -431,13 +469,13 @@ ALTER TABLE `order_details`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

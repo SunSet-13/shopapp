@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2025 at 07:44 PM
+-- Generation Time: Jun 16, 2025 at 09:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -141,7 +141,6 @@ CREATE TABLE `news` (
 --
 
 INSERT INTO `news` (`id`, `title`, `image`, `content`, `created_at`, `updated_at`) VALUES
-(1, 'So sánh Samsung Galaxy S24 Ultra và Xiaomi 14: Cuộc đua công nghệ đỉnh cao', 'https://example.com/images/s24-vs-xiaomi14.jpg', 'Trong năm 2025, Samsung và Xiaomi tiếp tục đối đầu nhau với hai siêu phẩm Galaxy S24 Ultra và Xiaomi 14. Cả hai đều mang đến những cải tiến vượt trội về thiết kế, hiệu năng và camera.\n\nGalaxy S24 Ultra gây ấn tượng mạnh với thiết kế khung titan, màn hình Dynamic AMOLED 2X 6.8 inch sắc nét và cụm camera 200MP hỗ trợ zoom 100x. Trong khi đó, Xiaomi 14 không hề kém cạnh khi sở hữu màn hình AMOLED 6.36 inch, hiệu năng từ Snapdragon 8 Gen 3 và hệ thống camera Leica chất lượng.\n\nNgoài ra, thời lượng pin của cả hai máy đều được tối ưu với công nghệ sạc nhanh, mang đến trải nghiệm sử dụng mượt mà trong cả ngày dài.\n\nDù chọn Samsung hay Xiaomi, người dùng đều sẽ có được một chiếc flagship xứng tầm, đáp ứng tốt cả công việc lẫn giải trí.', '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
 (2, 'So sánh Samsung Galaxy S24 Ultra và Xiaomi 14: Cuộc đua công nghệ đỉnh cao', 'https://example.com/images/s24-vs-xiaomi14.jpg', 'Trong năm 2025, Samsung và Xiaomi tiếp tục đối đầu nhau với hai siêu phẩm Galaxy S24 Ultra và Xiaomi 14. Cả hai đều mang đến những cải tiến vượt trội về thiết kế, hiệu năng và camera.\n\nGalaxy S24 Ultra gây ấn tượng mạnh với thiết kế khung titan, màn hình Dynamic AMOLED 2X 6.8 inch sắc nét và cụm camera 200MP hỗ trợ zoom 100x. Trong khi đó, Xiaomi 14 không hề kém cạnh khi sở hữu màn hình AMOLED 6.36 inch, hiệu năng từ Snapdragon 8 Gen 3 và hệ thống camera Leica chất lượng.\n\nNgoài ra, thời lượng pin của cả hai máy đều được tối ưu với công nghệ sạc nhanh, mang đến trải nghiệm sử dụng mượt mà trong cả ngày dài.\n\nDù chọn Samsung hay Xiaomi, người dùng đều sẽ có được một chiếc flagship xứng tầm, đáp ứng tốt cả công việc lẫn giải trí.', '2025-06-15 16:28:42', '2025-06-15 16:28:42');
 
 -- --------------------------------------------------------
@@ -163,16 +162,11 @@ CREATE TABLE `news_details` (
 --
 
 INSERT INTO `news_details` (`id`, `product_id`, `news_id`, `created_at`, `updated_at`) VALUES
-(1, 18, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
-(2, 23, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
-(3, 28, 1, '2025-06-13 09:50:34', '2025-06-13 09:50:34'),
-(5, 33, 1, '2025-06-13 09:50:34', '2025-06-15 17:43:39'),
 (6, 18, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
 (7, 23, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
 (8, 28, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
 (9, 33, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
-(10, 38, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42'),
-(11, 15, 1, '2025-06-15 17:33:49', '2025-06-15 17:33:49');
+(10, 38, 2, '2025-06-15 16:28:42', '2025-06-15 16:28:42');
 
 -- --------------------------------------------------------
 

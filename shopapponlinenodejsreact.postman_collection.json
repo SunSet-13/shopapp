@@ -398,14 +398,23 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{API_PREFIX}}/news/3",
+							"raw": "{{API_PREFIX}}/news/1",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
 								"news",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -452,12 +461,13 @@
 							"raw": "{\n  \"id\": 3,\n  \"name\": \"Danh mục cập nhật\"\n}"
 						},
 						"url": {
-							"raw": "{{API_PREFIX}}/news",
+							"raw": "{{API_PREFIX}}/news/1",
 							"host": [
 								"{{API_PREFIX}}"
 							],
 							"path": [
-								"news"
+								"news",
+								"1"
 							]
 						}
 					},

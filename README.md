@@ -232,3 +232,7 @@ export async function insertProduct(req, res) {
 - Khi xóa ở bên news thì bên news_detail cũng phải xóa.
 - Quan hệ giữa news và news_detail là 1 nhiều.
 - Sử dụng transaction để rollback lại từ đầu nếu có 1 lệnh nào đó không thành công
+## 15. Đưa các thông số DB và biến môi trường, sử dụng HealthCheck (020)
+- sửa file .env và index.js trong models sao cho phù hợp
+- dùng heathcheck để kiểm tra tình trạng hoạt động của server, hệ thống
+- 

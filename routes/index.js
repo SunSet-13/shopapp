@@ -18,6 +18,7 @@ import InsertOderRequest from "../dtos/requests/order/InsertOderRequest.js";
 import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 import InsertNewsRequest from "../dtos/requests/news/InsertNewsRequest.js";
 import InsertNewsDetailRequest from "../dtos/requests/newsdetail/InsertNewsDetailRequest.js";
+import UpdateNewsRequest from "../dtos/requests/news/UpdateNewRequest.js";
 
 export function routes(app) {
   //news
@@ -27,7 +28,7 @@ router.post("/news",
   validate(InsertNewsRequest), 
   asyncHandler(NewsController.insertNewsArticle));
 router.put("/news/:id", 
-  //validate(UpdateNewsRequest), 
+  validate(UpdateNewsRequest), 
   asyncHandler(NewsController.updateNewsArticle));
 router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   //Users

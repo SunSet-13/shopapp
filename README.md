@@ -213,7 +213,7 @@ export async function insertProduct(req, res) {
   Kiểm tra email có tồn tại không trong phần user
 ## 12.Thêm mới các News và xử lý transactions khi insert nhiều bảng(017)
 - Xử lí trong NewsController, hàm insert, xử lí 1 news có nhiều id sản phẩm
-## 13.Các chức năng CRUD cho NewsDetail
+## 13.Các chức năng CRUD cho NewsDetail(018)
 - Làm tương tự như các bảng khác
 - Thêm phần join bảng khi xử lí trong controller
 ```javascript
@@ -228,3 +228,7 @@ export async function insertProduct(req, res) {
     }),
 ```
 - Khi insert, update phải kiểm tra xem product_id và news_id có tồn tại không vì nó có liên quan đến 2 bảng news và product
+## 14.Các request update và delete News(019)
+- Khi xóa ở bên news thì bên news_detail cũng phải xóa.
+- Quan hệ giữa news và news_detail là 1 nhiều.
+- Sử dụng transaction để rollback lại từ đầu nếu có 1 lệnh nào đó không thành công

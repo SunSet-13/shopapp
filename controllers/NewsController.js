@@ -108,26 +108,47 @@ export async function insertNewsArticle(req, res) {
       error: error.message,
     });
   }
+
 }
 
 
 // Xoá tin tức
 export async function deleteNewsArticle(req, res) {
   const { id } = req.params;
+  //dùng transaction để rollback nếu có 1 lệnh ko chạy
+  const transaction = await db.sequelize.transaction();
 
-  const deleted = await db.News.destroy({
-    where: { id },
-  });
+  try {
+    // Xóa tất cả NewsDetail có liên quan đến news_id
+    await db.NewsDetail.destroy({
+      where: { news_id: id },
+      transaction,
+    });
 
-  if (deleted) {
-    return res.status(200).json({
-      message: "Xóa tin tức thành công",
+    // Xóa bản tin trong bảng News
+    const deleted = await db.News.destroy({
+      where: { id },
+      transaction,
+    });
+
+    if (deleted) {
+      await transaction.commit();
+      return res.status(200).json({
+        message: "Xóa tin tức thành công",
+      });
+    } else {
+      await transaction.rollback();
+      return res.status(404).json({
+        message: "Tin tức không tìm thấy",
+      });
+    }
+  } catch (error) {
+    await transaction.rollback();
+    return res.status(500).json({
+      message: "Đã xảy ra lỗi khi xóa tin tức",
+      error: error.message,
     });
   }
-
-  return res.status(404).json({
-    message: "Tin tức không tìm thấy",
-  });
 }
 
 // Cập nhật tin tức

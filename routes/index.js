@@ -6,9 +6,11 @@ import * as CategoryController from "../controllers/CategoryController.js";
 import * as BrandController from "../controllers/BrandController.js";
 import * as OrderController from "../controllers/OrderController.js";
 import * as OrderDetailController from "../controllers/OrderDetailController.js";
-import * as UserController from "../controllers/UserController.js"
-import * as NewsController from "../controllers/NewsController.js"
-import * as NewsDetailController from "../controllers/NewsDetailController.js"
+import * as UserController from "../controllers/UserController.js";
+import * as NewsController from "../controllers/NewsController.js";
+import * as NewsDetailController from "../controllers/NewsDetailController.js";
+import * as BannerController from "../controllers/BannerController.js";
+import * as BannerDetailController from "../controllers/BannerDetailController.js";
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -19,42 +21,60 @@ import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 import InsertNewsRequest from "../dtos/requests/news/InsertNewsRequest.js";
 import InsertNewsDetailRequest from "../dtos/requests/newsdetail/InsertNewsDetailRequest.js";
 import UpdateNewsRequest from "../dtos/requests/news/UpdateNewRequest.js";
-
+import InsertBannerRequest from "../dtos/requests/banners/InsertBannerRequest.js";
+import InsertBannerDetailRequest from "../dtos/requests/banner_detail/InsertBannerDetailRequest.js";
 export function routes(app) {
   //news
   router.get("/news", asyncHandler(NewsController.getNewsArticle));
-router.get("/news/:id", asyncHandler(NewsController.getNewsArticleById));
-router.post("/news", 
-  validate(InsertNewsRequest), 
-  asyncHandler(NewsController.insertNewsArticle));
-router.put("/news/:id", 
-  validate(UpdateNewsRequest), 
-  asyncHandler(NewsController.updateNewsArticle));
-router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
+  router.get("/news/:id", asyncHandler(NewsController.getNewsArticleById));
+  router.post(
+    "/news",
+    validate(InsertNewsRequest),
+    asyncHandler(NewsController.insertNewsArticle)
+  );
+  router.put(
+    "/news/:id",
+    validate(UpdateNewsRequest),
+    asyncHandler(NewsController.updateNewsArticle)
+  );
+  router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   //Users
-  router.post("/users",
-    validate(InsertUserRequest), 
+  router.post(
+    "/users",
+    validate(InsertUserRequest),
     asyncHandler(UserController.insertUser)
   );
 
   // Products
   router.get("/products", asyncHandler(ProductController.getProduct));
   router.get("/products/:id", asyncHandler(ProductController.getProductById));
-  router.post("/products",
-    validate(InsertProductRequest), 
+  router.post(
+    "/products",
+    validate(InsertProductRequest),
     asyncHandler(ProductController.insertProduct)
   );
   router.delete("/products/:id", asyncHandler(ProductController.deleteProduct));
-  router.put("/products/:id", 
+  router.put(
+    "/products/:id",
     validate(UpdateProductRequest),
-    asyncHandler(ProductController.updateProduct));
+    asyncHandler(ProductController.updateProduct)
+  );
 
   // Categories
   router.get("/categories", asyncHandler(CategoryController.getCategory));
-  router.get("/categories/:id", asyncHandler(CategoryController.getCategoryById));
+  router.get(
+    "/categories/:id",
+    asyncHandler(CategoryController.getCategoryById)
+  );
   router.post("/categories", asyncHandler(CategoryController.insertCategory));
-  router.delete("/categories/:id", asyncHandler(CategoryController.deleteCategory));
-  router.put("/categories/:id", asyncHandler(CategoryController.updateCategory));
+  router.delete(
+    "/categories/:id",
+    asyncHandler(CategoryController.deleteCategory)
+  );
+  router.put(
+    "/categories/:id",
+    asyncHandler(CategoryController.updateCategory)
+  );
 
   // Brands
   router.get("/brands", asyncHandler(BrandController.getBrand));
@@ -66,35 +86,94 @@ router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   // Orders
   router.get("/orders", asyncHandler(OrderController.getOrder));
   router.get("/orders/:id", asyncHandler(OrderController.getOrderById));
-  router.post("/orders",
+  router.post(
+    "/orders",
     validate(InsertOderRequest),
-    asyncHandler(OrderController.insertOrder));
+    asyncHandler(OrderController.insertOrder)
+  );
   router.delete("/orders/:id", asyncHandler(OrderController.deleteOrder));
   router.put("/orders/:id", asyncHandler(OrderController.updateOrder));
 
   // Order Details
-  router.get("/order-details", asyncHandler(OrderDetailController.getOrderDetail));
-  router.get("/order-details/:id", asyncHandler(OrderDetailController.getOrderDetailById));
-  router.post("/order-details", asyncHandler(OrderDetailController.insertOrderDetail));
-  router.delete("/order-details/:id", asyncHandler(OrderDetailController.deleteOrderDetail));
-  router.put("/order-details/:id", asyncHandler(OrderDetailController.updateOrderDetail));
+  router.get(
+    "/order-details",
+    asyncHandler(OrderDetailController.getOrderDetail)
+  );
+  router.get(
+    "/order-details/:id",
+    asyncHandler(OrderDetailController.getOrderDetailById)
+  );
+  router.post(
+    "/order-details",
+    asyncHandler(OrderDetailController.insertOrderDetail)
+  );
+  router.delete(
+    "/order-details/:id",
+    asyncHandler(OrderDetailController.deleteOrderDetail)
+  );
+  router.put(
+    "/order-details/:id",
+    asyncHandler(OrderDetailController.updateOrderDetail)
+  );
 
   //news_details
 
-  router.get("/news-details", asyncHandler(NewsDetailController.getNewsDetails));
-router.get("/news-details/:id", asyncHandler(NewsDetailController.getNewsDetailById));
-router.post(
-  "/news-details",
-   validate(InsertNewsDetailRequest),
-  asyncHandler(NewsDetailController.insertNewsDetail)
-);
-router.delete("/news-details/:id", asyncHandler(NewsDetailController.deleteNewsDetail));
-router.put(
-  "/news-details/:id",
-  // validate(UpdateNewsDetailRequest),
-  asyncHandler(NewsDetailController.updateNewsDetail)
-);
+  router.get(
+    "/news-details",
+    asyncHandler(NewsDetailController.getNewsDetails)
+  );
+  router.get(
+    "/news-details/:id",
+    asyncHandler(NewsDetailController.getNewsDetailById)
+  );
+  router.post(
+    "/news-details",
+    validate(InsertNewsDetailRequest),
+    asyncHandler(NewsDetailController.insertNewsDetail)
+  );
+  router.delete(
+    "/news-details/:id",
+    asyncHandler(NewsDetailController.deleteNewsDetail)
+  );
+  router.put(
+    "/news-details/:id",
+    // validate(UpdateNewsDetailRequest),
+    asyncHandler(NewsDetailController.updateNewsDetail)
+  );
 
+  //Banner
+  router.get("/banners", asyncHandler(BannerController.getBannerList));
+  router.get("/banners/:id", asyncHandler(BannerController.getBannerById));
+  router.post(
+    "/banners",
+    validate(InsertBannerRequest),
+    asyncHandler(BannerController.insertBanner)
+  );
+  router.delete("/banners/:id", asyncHandler(BannerController.deleteBanner));
+  router.put("/banners/:id", asyncHandler(BannerController.updateBanner));
+
+  //BannerDetail
+  router.get(
+    "/banner-details",
+    asyncHandler(BannerDetailController.getBannerDetail)
+  );
+  router.get(
+    "/banner-details/:id",
+    asyncHandler(BannerDetailController.getBannerDetailById)
+  );
+  router.post(
+    "/banner-details",
+    validate(InsertBannerDetailRequest),
+    asyncHandler(BannerDetailController.insertBannerDetail)
+  );
+  router.put(
+    "/banner-details/:id",
+    asyncHandler(BannerDetailController.updateBannerDetail)
+  );
+  router.delete(
+    "/banner-details/:id",
+    asyncHandler(BannerDetailController.deleteBannerDetail)
+  );
   // Mount the router to /api
   app.use("/api", router);
 }

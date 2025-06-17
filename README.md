@@ -235,4 +235,8 @@ export async function insertProduct(req, res) {
 ## 15. Đưa các thông số DB và biến môi trường, sử dụng HealthCheck (020)
 - sửa file .env và index.js trong models sao cho phù hợp
 - dùng heathcheck để kiểm tra tình trạng hoạt động của server, hệ thống
-- 
+## 16. Tạo các Request cho Thực Thể Banner và BannerDetail trong NodeJS (021)
+- làm giống như News và NewsDetail
+- Chú ý:
+  + Khi thêm và sửa BannerDetail phải kiểm tra banner_id và product_id có tồn tại không
+  + Khi sửa phải kiểm tra BannerDetail đó có tồn tại hay chưa (trừ bản thân chính nó)

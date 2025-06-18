@@ -240,3 +240,12 @@ export async function insertProduct(req, res) {
 - Chú ý:
   + Khi thêm và sửa BannerDetail phải kiểm tra banner_id và product_id có tồn tại không
   + Khi sửa phải kiểm tra BannerDetail đó có tồn tại hay chưa (trừ bản thân chính nó)
+## 17. Upload nhiều ảnh với multer, ImageController (022)
+1. Thư viện cần tải
+```javascript
+  yarn add multer
+```
+2. Tạo thêm thư mục middlewares
+- Thêm phần middlewares upload trong file server.js
+- Xử lí lỗi trong file UploadImagesMiddleware.js
+

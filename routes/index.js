@@ -11,6 +11,7 @@ import * as NewsController from "../controllers/NewsController.js";
 import * as NewsDetailController from "../controllers/NewsDetailController.js";
 import * as BannerController from "../controllers/BannerController.js";
 import * as BannerDetailController from "../controllers/BannerDetailController.js";
+import * as ImageController from "../controllers/ImageController.js"
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -23,6 +24,8 @@ import InsertNewsDetailRequest from "../dtos/requests/newsdetail/InsertNewsDetai
 import UpdateNewsRequest from "../dtos/requests/news/UpdateNewRequest.js";
 import InsertBannerRequest from "../dtos/requests/banners/InsertBannerRequest.js";
 import InsertBannerDetailRequest from "../dtos/requests/banner_detail/InsertBannerDetailRequest.js";
+import uploadImagesMiddleware from "../middlewares/uploadImagesMiddleware.js";
+
 export function routes(app) {
   //news
   router.get("/news", asyncHandler(NewsController.getNewsArticle));
@@ -173,6 +176,13 @@ export function routes(app) {
   router.delete(
     "/banner-details/:id",
     asyncHandler(BannerDetailController.deleteBannerDetail)
+  );
+
+  //upload
+  router.post(
+    "/images/upload",
+    uploadImagesMiddleware.array("images", 5),
+    asyncHandler(ImageController.uploadImages) // max 5 ảnh
   );
   // Mount the router to /api
   app.use("/api", router);

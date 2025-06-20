@@ -10,7 +10,7 @@ class InsertBannerRequest {
   static validate(data) {
     const schema = Joi.object({
       name: Joi.string().required(),
-      image: Joi.string().uri().allow("", null).optional(),
+      image: Joi.string().allow("", null).optional(),
       status: Joi.number().integer().greater(0).required()
     });
 

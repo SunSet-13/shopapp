@@ -154,18 +154,35 @@ export async function deleteNewsArticle(req, res) {
 // Cập nhật tin tức
 export async function updateNewsArticle(req, res) {
   const { id } = req.params;
+  const { title } = req.body;
 
+  // Kiểm tra xem title có trùng với bài viết khác (trừ chính nó)
+  const existingNews = await db.News.findOne({
+    where: {
+      title: title,
+      id: { [Op.ne]: id }, // Loại trừ chính bài viết đang cập nhật
+    },
+  });
+
+  if (existingNews) {
+    return res.status(400).json({
+      message: 'Tiêu đề bài viết đã tồn tại, vui lòng chọn tiêu đề khác.',
+    });
+  }
+
+  // Tiến hành cập nhật nếu không trùng
   const updatedNews = await db.News.update(req.body, {
     where: { id },
-  }); //update news_details
+  });
 
   if (updatedNews[0] > 0) {
     return res.status(200).json({
-      message: "Cập nhật tin tức thành công",
+      message: 'Cập nhật tin tức thành công',
     });
   }
 
   return res.status(404).json({
-    message: "Tin tức không tìm thấy",
+    message: 'Tin tức không tìm thấy',
   });
 }
+

@@ -249,3 +249,9 @@ export async function insertProduct(req, res) {
 - Thêm phần middlewares upload trong file server.js
 - Xử lí lỗi trong file UploadImagesMiddleware.js
 
+## 18.Update ảnh sau khi upload, thêm middlware kiểm tra ảnh (023)
+- thư viện sử dụng: fs, path
+- Xử lí trong ImageController
+- Xử lí trong UploadImagesMiddleware.js
+- Thêm phần validateImageExists trong middlewares để kiểm tra những ảnh up load (tách ra 1 file riêng để tái sử dụng, do nhiều file cùng có 1 hàm để kiểm tra ảnh upload)
+- thêm validateImageExists bọc vào trong từng route mà có ảnh upload, update

@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
 const { Op } = Sequelize;
+import fs from "fs";
+import path from "path";
 
 // Lấy danh sách banner có tìm kiếm và phân trang
 export async function getBannerList(req, res) {
@@ -84,18 +86,36 @@ export async function insertBanner(req, res) {
 // Cập nhật banner
 export async function updateBanner(req, res) {
   const { id } = req.params;
-  const updatedBanner = await db.Banner.update(req.body, {
-    where: { id },
+
+  // Check for duplicate name before update
+  const existingBanner = await db.Banner.findOne({
+    where: {
+      name: req.body.name,
+      id: { [Op.ne]: id },
+    },
   });
 
-  if (updatedBanner[0] > 0) {
-    return res.status(200).json({
-      message: "Cập nhật banner thành công",
+  if (existingBanner) {
+    return res.status(400).json({
+      message: "Tên banner đã tồn tại, vui lòng chọn tên khác.",
     });
   }
 
-  return res.status(404).json({
-    message: "Banner không tìm thấy",
+  // Update the banner
+  const updated = await db.Banner.update(req.body, {
+    where: { id },
+  });
+
+  // If update failed (no rows affected), return 404
+  if (updated[0] === 0) {
+    return res.status(404).json({
+      message: `Không tìm thấy banner với id = ${id} hoặc dữ liệu không thay đổi.`,
+    });
+  }
+
+  // Success
+  return res.status(200).json({
+    message: "Cập nhật banner thành công",
   });
 }
 

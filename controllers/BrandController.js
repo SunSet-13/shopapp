@@ -99,26 +99,35 @@ export async function deleteBrand(req, res) {
 
 export async function updateBrand(req, res) {
   const { id } = req.params;
+  const { name } = req.body;
 
-  try {
-    const updatedBrand = await db.Brand.update(req.body, {
-      where: { id },
-    });
+  // Kiểm tra xem tên thương hiệu có bị trùng không (ngoại trừ chính nó)
+  const existingBrand = await db.Brand.findOne({
+    where: {
+      name: name,
+      id: { [Op.ne]: id }, // loại trừ chính thương hiệu đang cập nhật
+    },
+  });
 
-    if (updatedBrand[0] > 0) {
-      return res.status(200).json({
-        message: "Cập nhật thương hiệu thành công",
-      });
-    }
-
-    return res.status(404).json({
-      message: "Thương hiệu không tìm thấy",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi máy chủ",
-      error: error.message,
+  if (existingBrand) {
+    return res.status(400).json({
+      message: 'Tên thương hiệu đã tồn tại, vui lòng chọn tên khác.',
     });
   }
+
+  // Tiến hành cập nhật nếu không trùng tên
+  const updatedBrand = await db.Brand.update(req.body, {
+    where: { id },
+  });
+
+  if (updatedBrand[0] > 0) {
+    return res.status(200).json({
+      message: 'Cập nhật thương hiệu thành công',
+    });
+  }
+
+  return res.status(404).json({
+    message: 'Thương hiệu không tìm thấy',
+  });
 }
 

@@ -75,15 +75,31 @@ export async function deleteProduct(req, res) {
     message: "Sản phẩm không tìm thấy",
   });
 }
+
 export async function updateProduct(req, res) {
   const { id } = req.params;
+  const { name } = req.body;
 
+  // Kiểm tra trùng tên sản phẩm (loại trừ chính nó)
+  const existingProduct = await db.Product.findOne({
+    where: {
+      name: name,
+      id: { [Op.ne]: id }, // loại trừ chính sản phẩm đang cập nhật
+    },
+  });
+
+  if (existingProduct) {
+    return res.status(400).json({
+      message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
+    });
+  }
+
+  // Cập nhật sản phẩm nếu tên không bị trùng
   const updatedProduct = await db.Product.update(req.body, {
     where: { id },
   });
 
   if (updatedProduct[0] > 0) {
-    // Sequelize trả về mảng [số lượng bản ghi đã cập nhật]
     return res.status(200).json({
       message: "Cập nhật sản phẩm thành công",
     });
@@ -93,6 +109,7 @@ export async function updateProduct(req, res) {
     message: "Sản phẩm không tìm thấy",
   });
 }
+
 /*
 [
   {

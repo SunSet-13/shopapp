@@ -262,4 +262,11 @@ export async function insertProduct(req, res) {
 - Thêm phần validateImageExists trong middlewares để kiểm tra những ảnh up load (tách ra 1 file riêng để tái sử dụng, do nhiều file cùng có 1 hàm để kiểm tra ảnh upload)
 - thêm validateImageExists bọc vào trong từng route mà có ảnh upload, update
 
-## 20.
+## 25. Viết request xoá các ảnh trên Google Cloud và Local server
+- Xử lí trong ImageController
+- Xử lí trong UploadImagesMiddleware.js
+- Lưu ý khi xóa ảnh phải kiểm tra xem ảnh có đang được sử dụng hay không
+- Kiểm tra trong các db liên quan đến ảnh
+- Xóa ảnh từ Firebase Storage
+- Xóa ảnh từ local server
+

@@ -255,3 +255,11 @@ export async function insertProduct(req, res) {
 - Xử lí trong UploadImagesMiddleware.js
 - Thêm phần validateImageExists trong middlewares để kiểm tra những ảnh up load (tách ra 1 file riêng để tái sử dụng, do nhiều file cùng có 1 hàm để kiểm tra ảnh upload)
 - thêm validateImageExists bọc vào trong từng route mà có ảnh upload, update
+
+## 19. Upload ảnh lên Google Firebase Storage (024)
+- Xử lí trong ImageController
+- Xử lí trong UploadImagesMiddleware.js
+- Thêm phần validateImageExists trong middlewares để kiểm tra những ảnh up load (tách ra 1 file riêng để tái sử dụng, do nhiều file cùng có 1 hàm để kiểm tra ảnh upload)
+- thêm validateImageExists bọc vào trong từng route mà có ảnh upload, update
+
+## 20.

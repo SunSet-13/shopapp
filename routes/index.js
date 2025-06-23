@@ -11,6 +11,7 @@ import * as NewsController from "../controllers/NewsController.js";
 import * as NewsDetailController from "../controllers/NewsDetailController.js";
 import * as BannerController from "../controllers/BannerController.js";
 import * as BannerDetailController from "../controllers/BannerDetailController.js";
+import imageGoogleUpload from "../middlewares/imageGoogleUpload.js";
 import * as ImageController from "../controllers/ImageController.js";
 
 import asyncHandler from "../middlewares/asyncHandler.js";
@@ -199,11 +200,17 @@ export function routes(app) {
     asyncHandler(BannerDetailController.deleteBannerDetail)
   );
 
-  //upload
+  //images
+  router.delete("/images/delete", ImageController.deleteImage);
   router.post(
     "/images/upload",
     uploadImagesMiddleware.array("images", 5),
     asyncHandler(ImageController.uploadImages) // max 5 ảnh
+  );
+  router.post(
+    "/images/google/upload",
+    imageGoogleUpload.single("image"), // hoặc .array("images") nếu upload nhiều ảnh
+    ImageController.uploadImageToGoogleStorage
   );
   router.get("/images/:fileName", asyncHandler(ImageController.viewImage));
   // Mount the router to /api

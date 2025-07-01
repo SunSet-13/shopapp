@@ -270,3 +270,14 @@ export async function insertProduct(req, res) {
 - Xóa ảnh từ Firebase Storage
 - Xóa ảnh từ local server
 
+## 26. Thêm dữ liệu vào bảng Product và ProductImage(27)
+- Thêm xử lí trong ProductController
+- Thêm join bảng 
+```javascript
+  const product = await db.Product.findByPk(id, {
+      include: [{
+        model: db.ProductImage,
+        as: 'productImages', // dùng đúng alias đã khai báo trong Product.hasMany
+      }],
+    });
+```

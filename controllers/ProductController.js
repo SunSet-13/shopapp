@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index.js";
 import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
+import e from "express";
 const { Op } = Sequelize;
 export async function getProduct(req, res) {
   //const products = await db.Product.findAll()
@@ -37,20 +38,41 @@ export async function getProduct(req, res) {
 }
 export async function getProductById(req, res) {
   const { id } = req.params;
-  const product = await db.Product.findByPk(id);
+
+  const product = await db.Product.findByPk(id, {
+    include: [{
+      model: db.ProductImage,
+      as: 'productImages', // dùng đúng alias đã khai báo trong Product.hasMany
+    }],
+  });
+
   if (!product) {
     return res.status(404).json({
-      message: "Sản phẩm không tồn tại",
+      message: 'Sản phẩm không tìm thấy',
     });
   }
-  res.status(200).json({
-    message: "Lấy thông tin sản phẩm thành công",
+
+  return res.status(200).json({
+    message: 'Lấy thông tin sản phẩm thành công',
     data: product,
   });
 }
 
+
+
 export async function insertProduct(req, res) {
+  //const userId = req.user.id; 
   // console.log(JSON.stringify(req.body))
+  const {name} = req.body;
+  const existingProduct = await db.Product.findOne({
+    where: {name}
+  });
+  if(existingProduct) {
+    return res.status(400).json({
+      message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
+    });
+  }
+
   const product = await db.Product.create(req.body);
   return res.status(201).json({
     message: "Thêm mới sản phẩm thành công",
@@ -79,20 +101,21 @@ export async function deleteProduct(req, res) {
 export async function updateProduct(req, res) {
   const { id } = req.params;
   const { name } = req.body;
-
-  // Kiểm tra trùng tên sản phẩm (loại trừ chính nó)
-  const existingProduct = await db.Product.findOne({
-    where: {
-      name: name,
-      id: { [Op.ne]: id }, // loại trừ chính sản phẩm đang cập nhật
-    },
-  });
-
-  if (existingProduct) {
-    return res.status(400).json({
-      message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
+  if (name !== undefined) {
+    const existingProduct = await db.Product.findOne({
+      where: {
+        name: name,
+        id: { [Op.ne]: id }, // loại trừ chính sản phẩm đang cập nhật
+      },
     });
+
+    if (existingProduct) {
+      return res.status(400).json({
+        message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
+      });
+    }
   }
+  // Kiểm tra trùng tên sản phẩm (loại trừ chính nó)
 
   // Cập nhật sản phẩm nếu tên không bị trùng
   const updatedProduct = await db.Product.update(req.body, {

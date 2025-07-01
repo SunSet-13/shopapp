@@ -1,3 +1,109 @@
+/*
+- Upload file to Local server
+- Upload image file to Google Firebase(Firestore)
+- Cloundinary, AWS
+*/
+import path from "path";
+import fs from "fs";
+import db from "../models/index.js";
+import { Sequelize } from "sequelize";
+
+export async function uploadImages(req, res) {
+  //kiểm tra nếu không có ảnh nào  được tải lên
+  if (!req.files || req.files.length === 0) {
+    throw new Error("Không có file nào được tải lên ");
+  }
+  //trả về đường dẫn của các file ảnh được tải lên
+  const uploadedImagesPaths = req.files.map((file) => path.basename(file.path));
+  res.status(201).json({
+    message: "Tải ảnh thành công",
+    files: uploadedImagesPaths,
+  });
+}
+
+export async function checkImageInUse(imageUrl) {
+  const imageFields = [
+    { model: db.User, field: 'avatar' },
+    { model: db.Category, field: 'image' },
+    { model: db.Brand, field: 'image' },
+    { model: db.Product, field: 'image' },
+    { model: db.News, field: 'image' },
+    { model: db.Banner, field: 'image' },
+  ];
+
+  for (let item of imageFields) {
+    const { model, field: fieldName } = item;
+
+    const query = {};
+    query[fieldName] = imageUrl;
+
+    const result = await model.findOne({ where: query });
+
+    if (result) {
+      // In ra model name, field và image url như ảnh bạn gửi
+      console.log(`Found in model: ${model.name}
+Field: ${fieldName}
+Image URL: ${imageUrl}`);
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+export async function deleteImage(req, res) {
+  const { url } = req.body;
+
+  // Kiểm tra đầu vào
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({
+      message: 'Thiếu hoặc sai định dạng trường "url".',
+    });
+  }
+
+  // Xử lý tên file ảnh (đã là tên ảnh luôn, không cần tách)
+  const imageName = url;
+  const imagePath = path.join(__dirname, '../uploads', imageName);
+
+  // Kiểm tra file có tồn tại không
+  if (!fs.existsSync(imagePath)) {
+    return res.status(404).json({
+      message: `Ảnh "${imageName}" không tồn tại.`,
+    });
+  }
+
+  // Kiểm tra xem ảnh có đang được sử dụng không
+  const inUse = await checkImageInUse(imageName);
+  if (inUse) {
+    return res.status(409).json({
+      message: `Không thể xóa ảnh "${imageName}" vì đang được sử dụng.`,
+    });
+  }
+
+  // Xóa ảnh
+  fs.unlinkSync(imagePath);
+  return res.status(200).json({
+    message: `Xóa ảnh "${imageName}" thành công.`,
+  });
+}
+export async function viewImage(req, res) {
+  const { fileName } = req.params;
+  const imagePath = path.join(path.join(__dirname, "../uploads/"), fileName);
+  fs.access(imagePath, fs.constants.F_OK, (error) => {
+    if (error) {
+      return res.status(404).send("Image Not Found");
+    }
+    res.sendFile(imagePath);
+  });
+}
+
+
+
+
+
+/*
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebaseConfig.js";
 
@@ -128,3 +234,5 @@ export async function deleteImage(req, res) {
   });
 }
 
+
+*/

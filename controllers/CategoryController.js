@@ -84,8 +84,8 @@ export async function updateCategory(req, res) {
   const { id } = req.params;
   const { name } = req.body;
 
-  // Kiểm tra xem tên mới có trùng với category khác không (trừ chính nó)
-  const existingCategory = await db.Category.findOne({
+  if(name !== undefined){
+   const existingCategory = await db.Category.findOne({
     where: {
       name: name,
       id: { [Op.ne]: id }, // Loại trừ chính category đang cập nhật
@@ -97,6 +97,10 @@ export async function updateCategory(req, res) {
       message: 'Tên danh mục đã tồn tại, vui lòng chọn tên khác.',
     });
   }
+  }
+
+  // Kiểm tra xem tên mới có trùng với category khác không (trừ chính nó)
+  
 
   // Tiến hành cập nhật
   const updatedCategory = await db.Category.update(req.body, {

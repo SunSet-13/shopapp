@@ -13,6 +13,7 @@ import * as BannerController from "../controllers/BannerController.js";
 import * as BannerDetailController from "../controllers/BannerDetailController.js";
 import imageGoogleUpload from "../middlewares/imageGoogleUpload.js";
 import * as ImageController from "../controllers/ImageController.js";
+import * as ProductImageController from "../controllers/ProductImageController.js";
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -27,6 +28,7 @@ import InsertBannerRequest from "../dtos/requests/banners/InsertBannerRequest.js
 import InsertBannerDetailRequest from "../dtos/requests/banner_detail/InsertBannerDetailRequest.js";
 import uploadImagesMiddleware from "../middlewares/uploadImagesMiddleware.js";
 import validateImageExists from "../middlewares/validateImageExists.js";
+import InsertProductImageRequest from "../dtos/requests/product_images/InsertProductImageRequest.js";
 
 export function routes(app) {
   //news
@@ -69,15 +71,40 @@ export function routes(app) {
     asyncHandler(ProductController.updateProduct)
   );
 
+  
+  //product images
+  router.get(
+    "/product-images",
+    asyncHandler(ProductImageController.getProductImages)
+  );
+  router.get(
+    "/product-images/:id",
+    asyncHandler(ProductImageController.getProductImageById) // Sửa lại tên hàm
+  );
+  router.post(
+    "/product-images",
+    validate(InsertProductImageRequest),
+    asyncHandler(ProductImageController.insertProductImage) // Sửa lại tên hàm
+  );
+  router.delete(
+    "/product-images/:id",
+    asyncHandler(ProductImageController.deleteProductImage) // Sửa lại tên hàm
+  );
+  router.put(
+    "/product-images/:id",
+    asyncHandler(ProductImageController.updateProductImage) // Sửa lại tên hàm
+  );
   // Categories
   router.get("/categories", asyncHandler(CategoryController.getCategory));
   router.get(
     "/categories/:id",
     asyncHandler(CategoryController.getCategoryById)
   );
-  router.post("/categories",
+  router.post(
+    "/categories",
     validateImageExists,
-    asyncHandler(CategoryController.insertCategory));
+    asyncHandler(CategoryController.insertCategory)
+  );
   router.delete(
     "/categories/:id",
     asyncHandler(CategoryController.deleteCategory)
@@ -207,11 +234,11 @@ export function routes(app) {
     uploadImagesMiddleware.array("images", 5),
     asyncHandler(ImageController.uploadImages) // max 5 ảnh
   );
-  router.post(
-    "/images/google/upload",
-    imageGoogleUpload.single("image"), // hoặc .array("images") nếu upload nhiều ảnh
-    ImageController.uploadImageToGoogleStorage
-  );
+  // router.post(
+  //   "/images/google/upload",
+  //   imageGoogleUpload.single("image"), // hoặc .array("images") nếu upload nhiều ảnh
+  //   ImageController.uploadImageToGoogleStorage
+  // );
   router.get("/images/:fileName", asyncHandler(ImageController.viewImage));
   // Mount the router to /api
   app.use("/api", router);

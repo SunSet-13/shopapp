@@ -281,3 +281,24 @@ export async function insertProduct(req, res) {
       }],
     });
 ```
+## 27. Thêm các bảng quản lý giỏ hàng và các controller tương ứng(28)
+- Thêm 2 bảng, tạo tương tự như các bảng khác.
+- Làm tương tự Category, xử lí validate cho từng bảng
+- Sử dụng sequelize tìm giỏ hàng của người dùng và lấy kèm theo toàn bộ sản phẩm trong giỏ, có giải thích chi tiết như sau:
+```javascript
+  const cart = await db.Cart.findOne({
+     where: { user_id },
+     include: [
+        {
+          model: db.CartItem,
+          as: "cartItems",
+          include: [
+           {
+              model: db.Product,
+              as: "product"
+           }
+         ]
+       }
+     ]
+   });
+```

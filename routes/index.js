@@ -14,6 +14,8 @@ import * as BannerDetailController from "../controllers/BannerDetailController.j
 import imageGoogleUpload from "../middlewares/imageGoogleUpload.js";
 import * as ImageController from "../controllers/ImageController.js";
 import * as ProductImageController from "../controllers/ProductImageController.js";
+import * as CartController from "../controllers/CartController.js";
+import * as CartItemController from "../controllers/CartItemController.js";
 
 import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
@@ -29,6 +31,8 @@ import InsertBannerDetailRequest from "../dtos/requests/banner_detail/InsertBann
 import uploadImagesMiddleware from "../middlewares/uploadImagesMiddleware.js";
 import validateImageExists from "../middlewares/validateImageExists.js";
 import InsertProductImageRequest from "../dtos/requests/product_images/InsertProductImageRequest.js";
+import InsertCartRequest from "../dtos/requests/cart/InsertCartRequest.js";
+import InsertCartItemRequest from "../dtos/requests/cart_item/InsertCartItemRequest.js";
 
 export function routes(app) {
   //news
@@ -71,7 +75,6 @@ export function routes(app) {
     asyncHandler(ProductController.updateProduct)
   );
 
-  
   //product images
   router.get(
     "/product-images",
@@ -163,6 +166,35 @@ export function routes(app) {
     asyncHandler(OrderDetailController.updateOrderDetail)
   );
 
+  //Cart
+  router.get("/carts", asyncHandler(CartController.getCart)); // lấy giỏ hàng theo user_id (query)
+  router.get("/carts/:id", asyncHandler(CartController.getCartById)); // lấy giỏ hàng theo id
+  router.post(
+    "/carts",
+    validate(InsertCartRequest),
+    asyncHandler(CartController.insertCart)
+  ); // tạo mới giỏ hàng
+  router.delete("/carts/:id", asyncHandler(CartController.deleteCart)); // xóa giỏ hàng
+
+  // Cart Items
+  router.get("/cart-items", asyncHandler(CartItemController.getCartItems)); // lấy danh sách mục giỏ hàng (có phân trang, query: cart_id, page)
+  router.get(
+    "/cart-items/:id",
+    asyncHandler(CartItemController.getCartItemById)
+  ); // lấy mục trong giỏ theo id
+  router.post(
+    "/cart-items",
+    validate(InsertCartItemRequest),
+    asyncHandler(CartItemController.insertCartItem)
+  ); // thêm mới
+  router.put(
+    "/cart-items/:id",
+    asyncHandler(CartItemController.updateCartItem)
+  ); // cập nhật số lượng
+  router.delete(
+    "/cart-items/:id",
+    asyncHandler(CartItemController.deleteCartItem)
+  ); // xóa mục trong giỏ
   //news_details
 
   router.get(

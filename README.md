@@ -302,3 +302,22 @@ export async function insertProduct(req, res) {
      ]
    });
 ```
+## 28. Viết api đặt hàng, chuyển dữ liệu từ Cart sang Order (029)
+- Trong CartController:
+  + cho phép mua hàng ko cần đăng nhập
+  + nếu session_id = null và user_id = null thì đó là khách vãng lai và ngược lại với khách có đăng nhập 
+- Trong CartItemController
+  + Khi insert sản phẩm vào giỏ hàng, nếu sản phẩm đó đã có thì cập nhật luôn số lượng sản phẩm ngay trong hàm insert, nếu ko có thì tạo mới, nếu số lượng sản phẩm = 0 thì xóa sản phẩm đó khỏi giỏ hàng
+  + Kiểm tra số lượng sản phẩm cho vào giỏ có lớn hơn trong kho hay không
+  + Khi xóa sản phẩm ở cartitem thì bên cart cũng phải được xóa
+- Xử lí checkout trong CartController, đẩy sang Order
+  + Chuyển đơn hàng từ cart sang order, thành công thì phải xóa trong cart đi, tương tự cart_items cũng bị xóa
+  ```javascript
+    include: [
+    {
+      model: db.Product,
+     as: 'product'
+    }
+  ]
+  ```
+- "as:product" giúp đặt tên rõ ràng cho quan hệ khi truy vấn liên kết giữa các bảng phải dùng đúng tên này.

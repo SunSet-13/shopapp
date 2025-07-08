@@ -9,9 +9,11 @@ class InsertCartItemRequest {
         const schema = joi.object({
             cart_id: joi.number().integer().required(),
             product_id: joi.number().integer().required(),  
-            quantity: joi.number().integer().min(1).required() // Số lượng phải là số nguyên dương
+            quantity: joi.number().integer().min(0).required() // Số lượng phải là số nguyên dương
 
         })
+        return schema.validate(data,{ abortEarly: false} );
     }
+    
 }
 export default InsertCartItemRequest;

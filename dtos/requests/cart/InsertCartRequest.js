@@ -1,17 +1,13 @@
 import joi from "joi";
 class InsertCartRequest {
     constructor(data) {
-        this.user_id = data.user_id; // ID của người dùng
-       this.image = data.image;
-       this.content = data.content;
-       this.product_ids = data.product_ids // Mảng các mục trong giỏ hàng
+        this.session_id = data.session_id; // ID của phiên làm việc
+        this.user_id = data.user_id; // ID của người dùng (nếu có)
     }
     static validate(data) {
         const schema = joi.object({
-            user_id: joi.number().integer().required(),
-            image: joi.string().uri().allow("", null).optional(),
-            content: joi.string().required(),
-            product_ids: joi.array().items(joi.number().integer()).required() // Mảng các ID sản phẩm
+            user_id: joi.number().integer().optional(),
+            session_id: joi.string().required() // ID của phiên làm việc là chuỗi
         });
         return schema.validate(data);
     }

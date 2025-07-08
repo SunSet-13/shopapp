@@ -7,10 +7,33 @@ export async function getOrder(req, res) {
     message: "Lấy danh sách đơn hàng thành công",
   });
 }
-
 export async function getOrderById(req, res) {
-  res.status(200).json({
+  const { id } = req.params;
+
+  const order = await db.Order.findByPk(id, {
+    include: [
+      {
+        model: db.OrderDetail,
+        as: "order_details",
+        include: [
+          {
+            model: db.Product,
+            as: "product",
+          },
+        ],
+      },
+    ],
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      message: "Không tìm thấy đơn hàng",
+    });
+  }
+
+  return res.status(200).json({
     message: "Lấy thông tin đơn hàng thành công",
+    data: order,
   });
 }
 

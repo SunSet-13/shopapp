@@ -167,13 +167,17 @@ export function routes(app) {
   );
 
   //Cart
-  router.get("/carts", asyncHandler(CartController.getCart)); // lấy giỏ hàng theo user_id (query)
+  router.get("/carts", asyncHandler(CartController.getCarts)); // lấy giỏ hàng theo user_id (query)
   router.get("/carts/:id", asyncHandler(CartController.getCartById)); // lấy giỏ hàng theo id
   router.post(
     "/carts",
     validate(InsertCartRequest),
     asyncHandler(CartController.insertCart)
   ); // tạo mới giỏ hàng
+  router.post(
+    "/carts/checkout",
+    asyncHandler(CartController.checkoutCart)
+  ); // thanh toán giỏ hàng
   router.delete("/carts/:id", asyncHandler(CartController.deleteCart)); // xóa giỏ hàng
 
   // Cart Items
@@ -182,11 +186,25 @@ export function routes(app) {
     "/cart-items/:id",
     asyncHandler(CartItemController.getCartItemById)
   ); // lấy mục trong giỏ theo id
+  router.get(
+    "/cart-items/carts/:cart_id",
+    asyncHandler(CartItemController.getCartItemsByCartId)
+  ); // lấy mục trong giỏ theo id
   router.post(
     "/cart-items",
     validate(InsertCartItemRequest),
     asyncHandler(CartItemController.insertCartItem)
   ); // thêm mới
+  router.post(
+    "/cart-items/increase",
+    validate(InsertCartItemRequest),
+    asyncHandler(CartItemController.insertIncreaseCartItem) // thêm mới hoặc cập nhật số lượng nếu đã có
+  )
+  router.post(
+    "/cart-items/decrease",
+    validate(InsertCartItemRequest),
+    asyncHandler(CartItemController.insertDecreaseCartItem) // giảm số lượng nếu đã có
+  );
   router.put(
     "/cart-items/:id",
     asyncHandler(CartItemController.updateCartItem)

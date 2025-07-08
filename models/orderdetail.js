@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       OrderDetail.belongsTo(models.Product, {
         foreignKey: 'product_id',
-        
+        as: 'product'
       });
     }
   }

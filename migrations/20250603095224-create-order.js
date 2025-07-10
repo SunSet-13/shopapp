@@ -17,6 +17,9 @@ module.exports = {
           key: 'id'
         },
       },
+      session_id: {
+        type: Sequelize.TEXT
+      },
       status: {
         type: Sequelize.INTEGER
       },
@@ -25,6 +28,12 @@ module.exports = {
       },
       total: {
         type: Sequelize.INTEGER
+      },
+      phone:{
+        type: Sequelize.TEXT
+      },
+      address: {
+        type: Sequelize.TEXT
       },
       created_at: {
         allowNull: false,

@@ -21,7 +21,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import validate from "../middlewares/validate.js";
 import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
 import UpdateProductRequest from "../dtos/requests/product/UpdateProductRequest.js";
-import InsertOderRequest from "../dtos/requests/order/InsertOderRequest.js";
+import InsertOderRequest from "../dtos/requests/order/InsertOrderRequest.js";
 import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 import InsertNewsRequest from "../dtos/requests/news/InsertNewsRequest.js";
 import InsertNewsDetailRequest from "../dtos/requests/newsdetail/InsertNewsDetailRequest.js";
@@ -33,6 +33,7 @@ import validateImageExists from "../middlewares/validateImageExists.js";
 import InsertProductImageRequest from "../dtos/requests/product_images/InsertProductImageRequest.js";
 import InsertCartRequest from "../dtos/requests/cart/InsertCartRequest.js";
 import InsertCartItemRequest from "../dtos/requests/cart_item/InsertCartItemRequest.js";
+import UpdateOrderRequest from "../dtos/requests/order/UpdateOrderRequest.js";
 
 export function routes(app) {
   //news
@@ -136,13 +137,14 @@ export function routes(app) {
   // Orders
   router.get("/orders", asyncHandler(OrderController.getOrder));
   router.get("/orders/:id", asyncHandler(OrderController.getOrderById));
-  router.post(
-    "/orders",
-    validate(InsertOderRequest),
-    asyncHandler(OrderController.insertOrder)
-  );
+  router.put("/orders/:id", validate(UpdateOrderRequest), asyncHandler(OrderController.updateOrder)); // Cập nhật đơn hàng
+  // router.post(
+  //   "/orders",
+  //   validate(InsertOderRequest),
+  //   asyncHandler(OrderController.insertOrder)
+  // );
   router.delete("/orders/:id", asyncHandler(OrderController.deleteOrder));
-  router.put("/orders/:id", asyncHandler(OrderController.updateOrder));
+  //router.put("/orders/:id", asyncHandler(OrderController.updateOrder));
 
   // Order Details
   router.get(

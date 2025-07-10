@@ -1,5 +1,6 @@
 import db from "../models";
 import { Sequelize } from "sequelize";
+import { OrderStatus } from "../contants";
 
 const { Op } = Sequelize;
 
@@ -206,6 +207,7 @@ export const checkoutCart = async (req, res) => {
         session_id: cart.session_id || null,
         total: finalTotal,
         note: note || null,
+        status: OrderStatus.PENDING, // Giả sử trạng thái đơn hàng là PENDING
       },
       { transaction }
     );

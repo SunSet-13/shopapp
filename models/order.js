@@ -22,9 +22,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init({
     user_id: DataTypes.INTEGER,
+    session_id: DataTypes.INTEGER,
     status: DataTypes.INTEGER,
     note: DataTypes.TEXT,
-    total: DataTypes.INTEGER
+    total: DataTypes.INTEGER,
+    phone: DataTypes.TEXT,
+    address: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Order',

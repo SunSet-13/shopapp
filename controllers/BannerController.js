@@ -3,7 +3,7 @@ import db from "../models/index";
 const { Op } = Sequelize;
 import fs from "fs";
 import path from "path";
-
+import { BannerStatus } from "../contants";
 // Lấy danh sách banner có tìm kiếm và phân trang
 export async function getBannerList(req, res) {
   const { search = "", page = 1 } = req.query;
@@ -67,9 +67,10 @@ export async function insertBanner(req, res) {
         message: "Banner với tên này đã tồn tại",
       });
     }
-
+    const bannerData = { ...req.body, status: BannerStatus.INACTIVE
+    }
     // Tạo mới nếu không trùng
-    const banner = await db.Banner.create(req.body);
+    const banner = await db.Banner.create(bannerData);
 
     return res.status(201).json({
       message: "Thêm banner thành công",

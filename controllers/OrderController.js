@@ -1,10 +1,39 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, where } from "sequelize";
 import db from "../models/index";
+import { OrderStatus } from "../contants";
 const { Op } = Sequelize;
 
 export async function getOrder(req, res) {
+
+  const { search = "", page = 1 } = req.query;
+  const pageSize = 6;
+  const offset = (page - 1) * pageSize; //5, trang 2 bắt đầu từ sp số 6
+  let whereClause = {};
+  if (search.trim() !== "") {
+    whereClause = {
+      [Op.or]: [
+        { status: { [Op.like]: `%${search}%` } },
+        { note: { [Op.like]: `%${search}%` } },
+      ],
+    };
+  }
+  const [orders, totalOrder] = await Promise.all([ 
+    db.Order.findAll({
+      where: whereClause,
+      limit: pageSize,
+      offset: offset
+    }),
+    db.Order.count({
+      where: whereClause,
+    
+    })
+  ]);
   res.status(200).json({
     message: "Lấy danh sách đơn hàng thành công",
+    data: orders,
+    currentPage: parseInt(page, 10),
+    totalPages: Math.ceil(totalOrder / pageSize), //11sp = 3 trang
+    totalOrder,
   });
 }
 export async function getOrderById(req, res) {
@@ -36,7 +65,7 @@ export async function getOrderById(req, res) {
     data: order,
   });
 }
-
+/*
 export async function insertOrder(req, res) {
   const { user_id } = req.body;
 
@@ -61,24 +90,30 @@ else {
   })
 }
 }
+*/
 
-export async function deleteOrder(req, res) {
+
+export const deleteOrder = async (req, res) => {
   const { id } = req.params;
 
-  const deleted = await db.Order.destroy({
-    where: { id },
-  });
+  // Cập nhật trạng thái đơn hàng sang FAILED thay vì xóa
+  const [updated] = await db.Order.update(
+    { status: OrderStatus.FAILED },
+    { where: { id } }
+  );
 
-  if (deleted) {
+  if (updated) {
     return res.status(200).json({
-      message: "Xóa đơn hàng thành công",
+      message: 'Đơn hàng đã được đánh dấu là thất bại 2'
     });
   }
 
   return res.status(404).json({
-    message: "Đơn hàng không tìm thấy",
+    message: 'Đơn hàng không tìm thấy'
   });
-}
+};
+
+
 
 export async function updateOrder(req, res) {
   const { id } = req.params;

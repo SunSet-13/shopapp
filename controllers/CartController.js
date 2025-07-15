@@ -1,6 +1,6 @@
 import db from "../models";
 import { Sequelize } from "sequelize";
-import { OrderStatus } from "../contants";
+import { OrderStatus } from "../constants";
 
 const { Op } = Sequelize;
 

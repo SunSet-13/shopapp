@@ -1,6 +1,6 @@
 import { Sequelize, where } from "sequelize";
 import db from "../models/index";
-import { OrderStatus } from "../contants";
+import { OrderStatus } from "../constants";
 const { Op } = Sequelize;
 
 export async function getOrder(req, res) {

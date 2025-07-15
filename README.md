@@ -323,4 +323,7 @@ export async function insertProduct(req, res) {
 - "as:product" giúp đặt tên rõ ràng cho quan hệ khi truy vấn liên kết giữa các bảng phải dùng đúng tên này.
 ## 29. Đặt enum cho các status (030)
 - Thêm folder contants, thêm enum status cho Banner và Order, dùng file index trong contants để gọi chung cho tất cả status của các bảng
-- 
+## 30. Viết các request đăng nhập đăng ký người dùng (031)
+- chỉnh sửa file UserController
+  + Cho phép đăng ký với gmail hoặc số điện thoại, đăng nhập cũng tương tự
+  + nhớ hash mật khẩu ( có thể dùng argon)

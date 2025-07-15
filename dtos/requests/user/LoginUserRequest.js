@@ -1,14 +1,12 @@
 import Joi from "joi";
-import  UserRole  from '../../../constants/UserRole.js';
 
-class InsertUserRequest {
+
+class LoginUserRequest {
   constructor(data) {
     this.email = data.email;
     this.password =data.password;
     //this.password = this.encryptPassword(data.password); // Phải được mã hóa trước khi lưu
-    this.name = data.name;
-   // this.role = data.role;
-    this.avatar = data.avatar;
+    
     this.phone = data.phone;
   }
   
@@ -17,9 +15,6 @@ class InsertUserRequest {
     const schema = Joi.object({
       email: Joi.string().email().optional(),
       password: Joi.string().min(6).optional(), // Gọi encrypt() trước khi lưu
-      name: Joi.string().required(),
-      //role: Joi.number().integer().min(UserRole.USER).required(),
-      avatar: Joi.string().uri().allow("").optional(),
       phone: Joi.string().pattern(/^[0-9]{9,15}$/).allow("").optional(),
     });
 
@@ -27,4 +22,4 @@ class InsertUserRequest {
   }
 }
 
-export default InsertUserRequest;
+export default LoginUserRequest;

@@ -34,6 +34,7 @@ import InsertProductImageRequest from "../dtos/requests/product_images/InsertPro
 import InsertCartRequest from "../dtos/requests/cart/InsertCartRequest.js";
 import InsertCartItemRequest from "../dtos/requests/cart_item/InsertCartItemRequest.js";
 import UpdateOrderRequest from "../dtos/requests/order/UpdateOrderRequest.js";
+import LoginUserRequest from "../dtos/requests/user/LoginUserRequest.js";
 
 export function routes(app) {
   //news
@@ -54,10 +55,18 @@ export function routes(app) {
   router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
   //Users
   router.post(
-    "/users",
+    "/users/register",
     validate(InsertUserRequest),
-    asyncHandler(UserController.insertUser)
+    asyncHandler(UserController.registerUser)
   );
+  
+    router.post(
+    "/users/login",
+    validate(LoginUserRequest),
+    asyncHandler(UserController.loginUser)
+  );
+
+  
 
   // Products
   router.get("/products", asyncHandler(ProductController.getProduct));

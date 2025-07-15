@@ -1,5 +1,5 @@
 import Joi from "joi";
-import OrderStatus from "../../../contants";
+import OrderStatus from "../../../constants";
 
 
 

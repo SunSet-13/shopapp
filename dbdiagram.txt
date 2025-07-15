@@ -55,6 +55,7 @@ ref: "users"."id" <"feedback"."user_id"
 table orders{
   id int [pk]
   user_id int
+  session_id varchar [null]
   status int
   note text
   total int
@@ -64,7 +65,7 @@ table orders{
 
 }
 
-ref: "users"."id" < "orders"."user_id"
+//ref: "users"."id" < "orders"."user_id"
 
 table order_details{
   id int [pk]
@@ -118,3 +119,34 @@ table banner_details{
 
 ref: "products"."id" < "banner_details"."product_id"
 ref: "banners"."id" < "banner_details"."banner_id"
+
+table product_images{
+  id int [pk]
+  product_id int
+ image_url varchar
+  created_at datetime
+  updated_at datetime
+}
+ref: "products"."id" < "product_images"."product_id"
+table carts{
+  id int [pk]
+  session_id varchar [note:'For indentifying guest']
+  user_id int [null]
+  created_at datetime
+  updated_at datetime
+}
+
+
+
+
+Table cart_items {
+  id int [pk]
+  cart_id int
+  product_id int
+  quantity int
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: "carts"."id" < "cart_items"."cart_id"
+Ref: "products"."id" < "cart_items"."product_id"

@@ -3,6 +3,7 @@ import { Sequelize } from "sequelize";
 import db from "../models/index";
 import e from "express";
 const { Op } = Sequelize;
+import { getAvatarURL } from "../helpers/imageHelper.js";
 
 // Lấy danh sách mục trong giỏ hàng theo cart_id, có phân trang
 export const getCartItems = async (req, res) => {

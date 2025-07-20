@@ -1,7 +1,7 @@
 import db from "../models";
 import { Sequelize } from "sequelize";
 import { OrderStatus } from "../constants";
-
+import { getAvatarURL } from "../helpers/imageHelper.js";
 const { Op } = Sequelize;
 
 // Lấy danh sách giỏ hàng (dành cho admin) có phân trang và lọc theo session_id hoặc user_id

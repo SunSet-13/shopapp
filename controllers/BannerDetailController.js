@@ -1,5 +1,5 @@
 import db from "../models";
-
+import { getAvatarURL } from "../helpers/imageHelper.js";
 // Lấy danh sách tất cả chi tiết banner
 export const getBannerDetail = async (req, res) => {
   const bannerDetails = await db.BannerDetail.findAll();

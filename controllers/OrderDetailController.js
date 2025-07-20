@@ -1,8 +1,10 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
+import { Op } from "sequelize";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 
 
-import { Op } from "sequelize"; // cần thiết nếu dùng search
+
 
 export async function getOrderDetail(req, res) {
   const { search = "", page = 1 } = req.query;

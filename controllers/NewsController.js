@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 const { Op } = Sequelize;
 
 // Lấy danh sách tin tức có tìm kiếm và phân trang
@@ -30,12 +31,16 @@ export async function getNewsArticle(req, res) {
   ]);
 
   return res.status(200).json({
-    message: "Lấy danh sách tin tức thành công",
-    data: newsList,
-    currentPage: parseInt(page, 10),
-    totalPages: Math.ceil(totalNews / pageSize),
-    totalNews,
-  });
+  message: "Lấy danh sách tin tức thành công",
+  data: newsList.map(news => ({
+    ...news.get({ plain: true }),
+    image: getAvatarURL(news.image),
+  })),
+  currentPage: parseInt(page, 10),
+  totalPages: Math.ceil(totalNews / pageSize),
+  totalNews,
+});
+
 }
 
 // Lấy tin tức theo ID
@@ -47,10 +52,14 @@ export async function getNewsArticleById(req, res) {
       message: "Tin tức không tìm thấy",
     });
   }
-  return res.status(200).json({
-    message: "Lấy thông tin tin tức thành công",
-    data: news,
-  });
+ return res.status(200).json({
+  message: "Lấy thông tin tin tức thành công",
+  data: {
+    ...news.get({ plain: true }),
+    image: getAvatarURL(news.image),
+  },
+});
+
 }
 
 // Thêm tin tức mới
@@ -97,10 +106,14 @@ export async function insertNewsArticle(req, res) {
 
     await transaction.commit();
 
-    return res.status(201).json({
-      message: "Thêm tin tức thành công",
-      data: newsArticle,
-    });
+   return res.status(201).json({
+  message: "Thêm tin tức thành công",
+  data: {
+    ...newsArticle.get({ plain: true }),
+    image: getAvatarURL(newsArticle.image),
+  },
+});
+
   } catch (error) {
     await transaction.rollback();
     return res.status(500).json({

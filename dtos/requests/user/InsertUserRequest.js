@@ -10,6 +10,8 @@ class InsertUserRequest {
    // this.role = data.role;
     this.avatar = data.avatar;
     this.phone = data.phone;
+    this.new_password = data.new_password;
+    this.old_password = data.old_password
   }
   
 
@@ -19,8 +21,10 @@ class InsertUserRequest {
       password: Joi.string().min(6).optional(), // Gọi encrypt() trước khi lưu
       name: Joi.string().required(),
       //role: Joi.number().integer().min(UserRole.USER).required(),
-      avatar: Joi.string().uri().allow("").optional(),
+      avatar: Joi.string().allow("").optional(),
       phone: Joi.string().pattern(/^[0-9]{9,15}$/).allow("").optional(),
+      old_password: Joi.string().min(6).optional(), 
+    new_password: Joi.string().min(6).optional(), 
     });
 
     return schema.validate(data);

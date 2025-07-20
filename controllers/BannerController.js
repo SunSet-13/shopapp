@@ -4,6 +4,7 @@ const { Op } = Sequelize;
 import fs from "fs";
 import path from "path";
 import { BannerStatus } from "../constants";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 // Lấy danh sách banner có tìm kiếm và phân trang
 export async function getBannerList(req, res) {
   const { search = "", page = 1 } = req.query;
@@ -28,9 +29,12 @@ export async function getBannerList(req, res) {
     }),
   ]);
 
-  return res.status(200).json({
+ return res.status(200).json({
     message: "Lấy danh sách banner thành công",
-    data: bannerList,
+    data: bannerList.map(banner => ({
+      ...banner.get({ plain: true }),         // 🔄 Chuyển Sequelize instance → object thường
+      image: getAvatarURL(banner.image),      // 🖼 Gọi hàm xử lý URL ảnh
+    })),
     currentPage: parseInt(page, 10),
     totalPages: Math.ceil(totalBanners / pageSize),
     totalBanners,
@@ -48,7 +52,10 @@ export async function getBannerById(req, res) {
   }
   return res.status(200).json({
     message: "Lấy thông tin banner thành công",
-    data: banner,
+    data: {
+      ...banner.get({ plain: true }),
+      image: getAvatarURL(banner.image),
+    },
   });
 }
 
@@ -72,10 +79,14 @@ export async function insertBanner(req, res) {
     // Tạo mới nếu không trùng
     const banner = await db.Banner.create(bannerData);
 
-    return res.status(201).json({
-      message: "Thêm banner thành công",
-      data: banner,
-    });
+   return res.status(201).json({
+  message: "Thêm banner thành công",
+  data: {
+    ...banner.get({ plain: true }),
+    image: getAvatarURL(banner.image),
+  },
+});
+
   } catch (error) {
     return res.status(500).json({
       message: "Có lỗi xảy ra khi thêm banner",

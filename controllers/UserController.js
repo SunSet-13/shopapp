@@ -5,6 +5,9 @@ import InsertUserRequest from "../dtos/requests/user/InsertUserRequest.js";
 import ResponseUser from "../dtos/responses/user/ResponseUser.js";
 import argon2 from "argon2";
 import UserRole from "../constants/UserRole.js";
+import jwt from "jsonwebtoken";
+import os  from "os";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 
 require("dotenv").config();
 
@@ -84,7 +87,9 @@ export async function loginUser(req, res) {
     });
   }
   const token = jwt.sign(
-    {id : user.id}
+    {id : user.id,
+      iat: Math.floor(Date.now()/1000)
+    }
     ,
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPRITION } // Thời gian hết hạn token
@@ -94,28 +99,70 @@ export async function loginUser(req, res) {
   // Đăng nhập thành công
   return res.status(200).json({
     message: "Đăng nhập thành công",
-    data: new ResponseUser(user), // trả về user không có password
+    data: {
+      user: new ResponseUser(user), 
+      token
+    }// trả về user không có password
   });
 }
 
-// Cập nhật người dùng
-export async function updateUser(req, res) {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
+  console.log(id)
+  const { name, avatar, old_password, new_password } = req.body;
 
-  const updatedUser = await db.User.update(req.body, {
-    where: { id },
-  });
-
-  if (updatedUser[0] > 0) {
-    return res.status(200).json({
-      message: "Cập nhật người dùng thành công",
+  // Kiểm tra quyền: user không được cập nhật thông tin người khác
+  if (req.user.id != id) {
+    return res.status(403).json({
+      message: 'Không được phép cập nhật thông tin của người dùng khác'
     });
   }
 
-  return res.status(404).json({
-    message: "Người dùng không tìm thấy",
+  // Tìm người dùng theo id
+  const user = await db.User.findByPk(id);
+  if (!user) {
+    return res.status(404).json({
+      message: 'Người dùng không tìm thấy'
+    });
+  }
+
+  // Nếu đổi mật khẩu
+  if (new_password && old_password) {
+    const passwordValid = await argon2.verify(user.password, old_password);
+    if (!passwordValid) {
+      return res.status(400).json({
+        message: 'Mật khẩu cũ không đúng'
+      });
+    }
+
+    user.password = await argon2.hash(new_password);
+  }
+
+  // // Chỉ cập nhật name và avatar nếu có
+  // if (name !== undefined) user.name = name;
+  // if (avatar !== undefined) user.avatar = avatar;
+
+  // Chỉ cập nhật name và avatar nếu có
+if (name !== undefined) user.name = name;
+if (avatar !== undefined) {
+  user.avatar = getAvatarURL(user.avatar);
+
+  
+  }
+
+
+
+  // Lưu lại thông tin
+  await user.save();
+
+  return res.status(200).json({
+    message: 'Cập nhật người dùng thành công',
+     data: {
+      ...user.get({plain: true}),
+      avatar: getAvatarURL(user.avatar) // Chuyển đổi avatar sang URL
+    }
   });
-}
+};
 
 // Xoá người dùng
 export async function deleteUser(req, res) {
@@ -135,3 +182,32 @@ export async function deleteUser(req, res) {
     message: "Người dùng không tìm thấy",
   });
 }
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  // Chỉ cho phép người dùng xem thông tin của chính họ hoặc nếu họ có vai trò là admin (role = 2)
+  if (req.user.id != id && req.user.role != UserRole.ADMIN) {
+    return res.status(403).json({
+      message: 'Chỉ người dùng hoặc quản trị viên mới có quyền truy cập thông tin này'
+    });
+  }
+
+  // Tìm người dùng bằng primaryKey, loại bỏ trường password khỏi kết quả
+  const user = await db.User.findByPk(id, {
+    attributes: { exclude: ['password'] }
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'Người dùng không tìm thấy'
+    });
+  }
+
+  res.status(200).json({
+    message: 'Lấy thông tin người dùng thành công',
+    data: {
+      ...user.get({plain: true}),
+      avatar: getAvatarURL(user.avatar) // Chuyển đổi avatar sang URL
+    }
+  });
+};

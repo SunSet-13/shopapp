@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import db from "../models/index.js";
 import InsertProductRequest from "../dtos/requests/product/InsertProductRequest.js";
 import e from "express";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 const { Op } = Sequelize;
 export async function getProduct(req, res) {
   //const products = await db.Product.findAll()
@@ -29,12 +30,16 @@ export async function getProduct(req, res) {
     }),
   ]);
   res.status(200).json({
-    message: "Lấy danh sách sản phẩm thành công",
-    data: products,
-    currentPage: parseInt(page, 10),
-    totalPages: Math.ceil(totalProducts / pageSize), //11sp = 3 trang
-    totalProducts,
-  });
+  message: "Lấy danh sách sản phẩm thành công",
+  data: products.map(product => ({
+    ...product.get({ plain: true }),
+    image: getAvatarURL(product.image),
+  })),
+  currentPage: parseInt(page, 10),
+  totalPages: Math.ceil(totalProducts / pageSize),
+  totalProducts,
+});
+
 }
 export async function getProductById(req, res) {
   const { id } = req.params;
@@ -52,10 +57,14 @@ export async function getProductById(req, res) {
     });
   }
 
-  return res.status(200).json({
-    message: 'Lấy thông tin sản phẩm thành công',
-    data: product,
-  });
+ return res.status(200).json({
+  message: 'Lấy thông tin sản phẩm thành công',
+  data: {
+    ...product.get({ plain: true }),
+    image: getAvatarURL(product.image),
+  },
+});
+
 }
 
 
@@ -74,10 +83,14 @@ export async function insertProduct(req, res) {
   }
 
   const product = await db.Product.create(req.body);
-  return res.status(201).json({
-    message: "Thêm mới sản phẩm thành công",
-    data: product,
-  });
+  return res.status(200).json({
+  message: 'Lấy thông tin sản phẩm thành công',
+  data: {
+    ...product.get({ plain: true }),
+    image: getAvatarURL(product.image),
+  },
+});
+
 }
 
 export async function deleteProduct(req, res) {

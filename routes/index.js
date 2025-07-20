@@ -36,50 +36,76 @@ import InsertCartItemRequest from "../dtos/requests/cart_item/InsertCartItemRequ
 import UpdateOrderRequest from "../dtos/requests/order/UpdateOrderRequest.js";
 import LoginUserRequest from "../dtos/requests/user/LoginUserRequest.js";
 
+import { requireRoles } from "../middlewares/jwtMiddleware.js";
+import UserRole from "../constants/UserRole.js";
+import { valid } from "joi";
+
 export function routes(app) {
   //news
   router.get("/news", asyncHandler(NewsController.getNewsArticle));
   router.get("/news/:id", asyncHandler(NewsController.getNewsArticleById));
   router.post(
     "/news",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm bài viết
     validate(InsertNewsRequest),
     validateImageExists,
     asyncHandler(NewsController.insertNewsArticle)
   );
   router.put(
     "/news/:id",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm bài viết
+
     validate(UpdateNewsRequest),
     validateImageExists,
     asyncHandler(NewsController.updateNewsArticle)
   );
-  router.delete("/news/:id", asyncHandler(NewsController.deleteNewsArticle));
+  router.delete(
+    "/news/:id",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm bài viết
+    asyncHandler(NewsController.deleteNewsArticle)
+  );
   //Users
   router.post(
     "/users/register",
     validate(InsertUserRequest),
     asyncHandler(UserController.registerUser)
   );
-  
-    router.post(
+
+  router.post(
     "/users/login",
     validate(LoginUserRequest),
     asyncHandler(UserController.loginUser)
   );
+  router.put("/users/:id",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm bài viết
+    validate(InsertUserRequest),
+    asyncHandler(UserController.updateUser)
+  );
+   router.post("/users/me/:id",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm bài viết
+    validate(InsertUserRequest),
+    asyncHandler(UserController.getUserById)
+  )
 
-  
 
   // Products
   router.get("/products", asyncHandler(ProductController.getProduct));
   router.get("/products/:id", asyncHandler(ProductController.getProductById));
   router.post(
     "/products",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN thêm sản phẩm
     validate(InsertProductRequest),
     validateImageExists,
     asyncHandler(ProductController.insertProduct)
   );
-  router.delete("/products/:id", asyncHandler(ProductController.deleteProduct));
+  router.delete(
+    "/products/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN xóa sản phẩm
+    asyncHandler(ProductController.deleteProduct)
+  );
   router.put(
     "/products/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN cập nhật sản phẩm
     validate(UpdateProductRequest),
     validateImageExists,
     asyncHandler(ProductController.updateProduct)
@@ -96,15 +122,18 @@ export function routes(app) {
   );
   router.post(
     "/product-images",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN thêm hình ảnh sản phẩm
     validate(InsertProductImageRequest),
     asyncHandler(ProductImageController.insertProductImage) // Sửa lại tên hàm
   );
   router.delete(
     "/product-images/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN xóa hình ảnh sản phẩm
     asyncHandler(ProductImageController.deleteProductImage) // Sửa lại tên hàm
   );
   router.put(
     "/product-images/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN cập nhật hình ảnh sản phẩm
     asyncHandler(ProductImageController.updateProductImage) // Sửa lại tên hàm
   );
   // Categories
@@ -115,15 +144,19 @@ export function routes(app) {
   );
   router.post(
     "/categories",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN thêm danh mục
     validateImageExists,
     asyncHandler(CategoryController.insertCategory)
   );
   router.delete(
     "/categories/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN xóa danh mục
     asyncHandler(CategoryController.deleteCategory)
   );
   router.put(
     "/categories/:id",
+
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN cập nhật danh mục
     validateImageExists,
     asyncHandler(CategoryController.updateCategory)
   );
@@ -134,11 +167,17 @@ export function routes(app) {
   router.post(
     "/brands",
     validateImageExists,
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN thêm thương hiệu
     asyncHandler(BrandController.insertBrand)
   );
-  router.delete("/brands/:id", asyncHandler(BrandController.deleteBrand));
+  router.delete(
+    "/brands/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN xóa thương hiệu
+    asyncHandler(BrandController.deleteBrand)
+  );
   router.put(
     "/brands/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN cập nhật thương hiệu
     validateImageExists,
     asyncHandler(BrandController.updateBrand)
   );
@@ -146,13 +185,22 @@ export function routes(app) {
   // Orders
   router.get("/orders", asyncHandler(OrderController.getOrder));
   router.get("/orders/:id", asyncHandler(OrderController.getOrderById));
-  router.put("/orders/:id", validate(UpdateOrderRequest), asyncHandler(OrderController.updateOrder)); // Cập nhật đơn hàng
+  router.put(
+    "/orders/:id",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN cập nhật đơn hàng
+    validate(UpdateOrderRequest),
+    asyncHandler(OrderController.updateOrder)
+  ); // Cập nhật đơn hàng
   // router.post(
   //   "/orders",
   //   validate(InsertOderRequest),
   //   asyncHandler(OrderController.insertOrder)
   // );
-  router.delete("/orders/:id", asyncHandler(OrderController.deleteOrder));
+  router.delete(
+    "/orders/:id",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN xóa đơn hàng
+    asyncHandler(OrderController.deleteOrder)
+  );
   //router.put("/orders/:id", asyncHandler(OrderController.updateOrder));
 
   // Order Details
@@ -166,6 +214,7 @@ export function routes(app) {
   );
   router.post(
     "/order-details",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN và USER thêm chi tiết đơn hàng
     asyncHandler(OrderDetailController.insertOrderDetail)
   );
   router.delete(
@@ -187,9 +236,14 @@ export function routes(app) {
   ); // tạo mới giỏ hàng
   router.post(
     "/carts/checkout",
+    requireRoles([UserRole.USER]), // Chỉ cho phép USER thanh toán giỏ hàng
     asyncHandler(CartController.checkoutCart)
   ); // thanh toán giỏ hàng
-  router.delete("/carts/:id", asyncHandler(CartController.deleteCart)); // xóa giỏ hàng
+  router.delete(
+    "/carts/:id",
+    requireRoles([UserRole.USER, UserRole.ADMIN]), // Chỉ cho phép USER xóa giỏ hàng của mình
+    asyncHandler(CartController.deleteCart)
+  ); // xóa giỏ hàng
 
   // Cart Items
   router.get("/cart-items", asyncHandler(CartItemController.getCartItems)); // lấy danh sách mục giỏ hàng (có phân trang, query: cart_id, page)
@@ -203,25 +257,30 @@ export function routes(app) {
   ); // lấy mục trong giỏ theo id
   router.post(
     "/cart-items",
+    requireRoles([UserRole.USER]), // Chỉ cho phép USER thêm mục vào giỏ hàng của mình
     validate(InsertCartItemRequest),
     asyncHandler(CartItemController.insertCartItem)
   ); // thêm mới
   router.post(
     "/cart-items/increase",
+    requireRoles([UserRole.USER]), // Chỉ cho phép USER tăng số lượng mục trong giỏ hàng của mình
     validate(InsertCartItemRequest),
     asyncHandler(CartItemController.insertIncreaseCartItem) // thêm mới hoặc cập nhật số lượng nếu đã có
-  )
+  );
   router.post(
     "/cart-items/decrease",
+    requireRoles([UserRole.USER]), // Chỉ cho phép USER giảm số lượng mục trong giỏ hàng của mình
     validate(InsertCartItemRequest),
     asyncHandler(CartItemController.insertDecreaseCartItem) // giảm số lượng nếu đã có
   );
   router.put(
     "/cart-items/:id",
+    requireRoles([UserRole.USER]), // Chỉ cho phép USER cập nhật mục trong giỏ hàng của mình
     asyncHandler(CartItemController.updateCartItem)
   ); // cập nhật số lượng
   router.delete(
     "/cart-items/:id",
+    requireRoles([UserRole.USER, UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
     asyncHandler(CartItemController.deleteCartItem)
   ); // xóa mục trong giỏ
   //news_details
@@ -236,15 +295,21 @@ export function routes(app) {
   );
   router.post(
     "/news-details",
+    requireRoles([UserRole.USER, UserRole.ADMIN]),
+
     validate(InsertNewsDetailRequest),
     asyncHandler(NewsDetailController.insertNewsDetail)
   );
   router.delete(
     "/news-details/:id",
+    requireRoles([UserRole.USER]),
+
     asyncHandler(NewsDetailController.deleteNewsDetail)
   );
   router.put(
     "/news-details/:id",
+    requireRoles([UserRole.USER, UserRole.ADMIN]),
+
     // validate(UpdateNewsDetailRequest),
     asyncHandler(NewsDetailController.updateNewsDetail)
   );
@@ -254,13 +319,21 @@ export function routes(app) {
   router.get("/banners/:id", asyncHandler(BannerController.getBannerById));
   router.post(
     "/banners",
+    requireRoles([UserRole.ADMIN]), // Chỉ cho phép ADMIN thêm banner
     validate(InsertBannerRequest),
     validateImageExists,
     asyncHandler(BannerController.insertBanner)
   );
-  router.delete("/banners/:id", asyncHandler(BannerController.deleteBanner));
+  router.delete(
+    "/banners/:id",
+    requireRoles([ UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
+
+    asyncHandler(BannerController.deleteBanner)
+  );
   router.put(
     "/banners/:id",
+    requireRoles([ UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
+
     validateImageExists,
     asyncHandler(BannerController.updateBanner)
   );
@@ -276,22 +349,29 @@ export function routes(app) {
   );
   router.post(
     "/banner-details",
+    requireRoles([ UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
+
     validate(InsertBannerDetailRequest),
     asyncHandler(BannerDetailController.insertBannerDetail)
   );
   router.put(
     "/banner-details/:id",
+    requireRoles([ UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
     asyncHandler(BannerDetailController.updateBannerDetail)
   );
   router.delete(
     "/banner-details/:id",
+    requireRoles([ UserRole.ADMIN]), // Chỉ cho phép USER xóa mục trong giỏ hàng của mình
     asyncHandler(BannerDetailController.deleteBannerDetail)
   );
 
   //images
-  router.delete("/images/delete", ImageController.deleteImage);
+  router.delete("/images/delete",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), 
+    ImageController.deleteImage);
   router.post(
     "/images/upload",
+    requireRoles([UserRole.ADMIN, UserRole.USER]), // Chỉ cho phép ADMIN và USER upload ảnh
     uploadImagesMiddleware.array("images", 5),
     asyncHandler(ImageController.uploadImages) // max 5 ảnh
   );

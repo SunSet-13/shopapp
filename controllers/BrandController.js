@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
+import { getAvatarURL } from "../helpers/imageHelper.js";
 const { Op } = Sequelize;
+
 export async function getBrand(req, res) {
   const { Op } = Sequelize;
 
@@ -27,12 +29,15 @@ export async function getBrand(req, res) {
   ]);
 
   return res.status(200).json({
-    message: "Lấy danh sách thương hiệu thành công",
-    data: brands,
-    currentPage: parseInt(page, 10),
-    totalPages: Math.ceil(totalCount / pageSize),
-    totalBrands: totalCount,
-  });
+  message: "Lấy danh sách thương hiệu thành công",
+  data: brands.map((brand) => ({
+    ...brand.get({ plain: true }),
+    image: getAvatarURL(brand.image),
+  })),
+  currentPage: parseInt(page, 10),
+  totalPages: Math.ceil(totalCount / pageSize),
+  totalBrands: totalCount,
+});
 }
 
 export async function getBrandById(req, res) {
@@ -44,19 +49,25 @@ export async function getBrandById(req, res) {
     });
   }
   res.status(200).json({
-    message: "Lấy thông tin thương hiệu thành công",
-    data: brand,
-  });
+  message: "Lấy thông tin thương hiệu thành công",
+  data: {
+    ...brand.get({ plain: true }),
+    image: getAvatarURL(brand.image),
+  },
+});
 }
 
 export async function insertBrand(req, res) {
   try {
     // Thêm brand mới với dữ liệu từ req.body
     const brand = await db.Brand.create(req.body);
-    res.status(201).json({
-      message: "Thêm thương hiệu thành công",
-      data: brand,
-    });
+  res.status(201).json({
+  message: "Thêm thương hiệu thành công",
+  data: {
+    ...brand.get({ plain: true }),
+    image: getAvatarURL(brand.image),
+  },
+});
   } catch (error) {
     res.status(500).json({
       message: "Lỗi khi thêm thương hiệu",

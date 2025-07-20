@@ -1,6 +1,9 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index";
+
+import { getAvatarURL } from "../helpers/imageHelper.js";
 const {Op} = Sequelize;
+
 export async function getCategory(req, res) {
  
     const { search = '', page = 1 } = req.query;
@@ -28,13 +31,17 @@ export async function getCategory(req, res) {
       })
     ]);
 
-    return res.status(200).json({
-      message: 'Lấy danh sách danh mục thành công',
-      data: categories,
-      currentPage: parseInt(page, 10),
-      totalPages: Math.ceil(totalCategories/ pageSize),
-      totalCategories
-    });
+ return res.status(200).json({
+  message: 'Lấy danh sách danh mục thành công',
+  data: categories.map(category => ({
+    ...category.get({ plain: true }),
+    image: getAvatarURL(category.image),
+  })),
+  currentPage: parseInt(page, 10),
+  totalPages: Math.ceil(totalCategories / pageSize),
+  totalCategories
+});
+
  
 }
 
@@ -47,18 +54,26 @@ export async function getCategoryById(req, res) {
     });
   }
     res.status(200).json({
-        message: 'Lấy thông tin danh mục thành công',
-        data: category,
-    });
+  message: 'Lấy thông tin danh mục thành công',
+  data: {
+    ...category.get({ plain: true }),
+    image: getAvatarURL(category.image),
+  },
+});
+
 }
 
 export async function insertCategory(req, res) {
   // Thêm category mới với dữ liệu từ req.body
   const category = await db.Category.create(req.body);
-  res.status(201).json({
-    message: "Thêm danh mục thành công",
-    data: category,
-  });
+ res.status(200).json({
+  message: 'Lấy thông tin danh mục thành công',
+  data: {
+    ...category.get({ plain: true }),
+    image: getAvatarURL(category.image),
+  },
+});
+
 }
 
 

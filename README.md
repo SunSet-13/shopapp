@@ -327,3 +327,7 @@ export async function insertProduct(req, res) {
 - chỉnh sửa file UserController
   + Cho phép đăng ký với gmail hoặc số điện thoại, đăng nhập cũng tương tự
   + nhớ hash mật khẩu ( có thể dùng argon)
+## 31. Phân quyền cho từng Request với JWT middleware(032)
+- Dùng jwt 
+## 32. Viết api cập nhật thông tin User, đổi Password(033)
+## 33. Sửa lại các đối tượng response hiển thị ảnh(034)

@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../models/index.js";
 const { Op } = Sequelize;
+import { getAvatarURL } from "../helpers/imageHelper.js";
 
 // Lấy danh sách hình ảnh sản phẩm (có phân trang và lọc theo product_id)
 export async function getProductImages(req, res) {
@@ -34,12 +35,16 @@ export async function getProductImages(req, res) {
   ]);
 
   return res.status(200).json({
-    message: "Lấy danh sách hình ảnh sản phẩm thành công",
-    data: productImages,
-    currentPage: parseInt(page),
-    totalPage: Math.ceil(totalProductImages / pageSize),
-    totalProductImages,
-  });
+  message: "Lấy danh sách hình ảnh sản phẩm thành công",
+  data: productImages.map(image => ({
+    ...image.get({ plain: true }),
+    image_url: getAvatarURL(image.image_url),
+  })),
+  currentPage: parseInt(page),
+  totalPage: Math.ceil(totalProductImages / pageSize),
+  totalProductImages,
+});
+
 }
 
 
@@ -55,10 +60,14 @@ export async function getProductImageById(req, res) {
     });
   }
 
-  return res.status(200).json({
-    message: "Lấy thông tin hình ảnh sản phẩm thành công",
-    data: productImage,
-  });
+  return res.status(201).json({
+  message: "Thêm hình ảnh thành công",
+  data: {
+    ...productImage.get({ plain: true }),
+    image_url: getAvatarURL(productImage.image_url),
+  },
+});
+
 }
 
 export async function insertProductImage(req, res) {
@@ -94,9 +103,13 @@ export async function insertProductImage(req, res) {
   const productImage = await db.ProductImage.create({ product_id, image_url });
 
   return res.status(201).json({
-    message: "Thêm hình ảnh thành công",
-    data: productImage,
-  });
+  message: "Thêm hình ảnh thành công",
+  data: {
+    ...productImage.get({ plain: true }),
+    image_url: getAvatarURL(productImage.image_url),
+  },
+});
+
 }
 
 

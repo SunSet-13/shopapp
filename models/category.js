@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'categories',
     
     underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   });
   return Category;
 };

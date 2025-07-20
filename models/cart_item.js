@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'CartItem',
     tableName: 'cart_items',
     underscored: true,
+ 
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   });
   return CartItem;
 };

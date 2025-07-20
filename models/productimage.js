@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "ProductImage",
       tableName: "product_images",
+      createdAt: 'created_at',
+    updatedAt: 'updated_at',
     }
   );
   return ProductImage;

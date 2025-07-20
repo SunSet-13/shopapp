@@ -35,9 +35,9 @@ export async function getProduct(req, res) {
     ...product.get({ plain: true }),
     image: getAvatarURL(product.image),
   })),
-  currentPage: parseInt(page, 10),
-  totalPages: Math.ceil(totalProducts / pageSize),
-  totalProducts,
+  current_page: parseInt(page, 10),
+  total_page: Math.ceil(totalProducts / pageSize),
+  total: totalProducts,
 });
 
 }

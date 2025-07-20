@@ -36,9 +36,9 @@ export async function getNewsArticle(req, res) {
     ...news.get({ plain: true }),
     image: getAvatarURL(news.image),
   })),
-  currentPage: parseInt(page, 10),
-  totalPages: Math.ceil(totalNews / pageSize),
-  totalNews,
+  current_page: parseInt(page, 10),
+  total_page: Math.ceil(totalNews / pageSize),
+  total: totalNews,
 });
 
 }

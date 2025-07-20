@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Banner',
     tableName: 'banners',
     underscored: true,
+   
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   });
   return Banner;
 };

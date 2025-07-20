@@ -34,9 +34,9 @@ export async function getBrand(req, res) {
     ...brand.get({ plain: true }),
     image: getAvatarURL(brand.image),
   })),
-  currentPage: parseInt(page, 10),
-  totalPages: Math.ceil(totalCount / pageSize),
-  totalBrands: totalCount,
+  current_page: parseInt(page, 10),
+  total_page: Math.ceil(totalCount / pageSize),
+ total: totalBrands,
 });
 }
 

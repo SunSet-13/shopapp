@@ -37,9 +37,9 @@ export async function getCategory(req, res) {
     ...category.get({ plain: true }),
     image: getAvatarURL(category.image),
   })),
-  currentPage: parseInt(page, 10),
-  totalPages: Math.ceil(totalCategories / pageSize),
-  totalCategories
+  current_page: parseInt(page, 10),
+  total_page: Math.ceil(totalCategories / pageSize),
+  total: totalCategories
 });
 
  

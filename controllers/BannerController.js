@@ -35,9 +35,9 @@ export async function getBannerList(req, res) {
       ...banner.get({ plain: true }),         // 🔄 Chuyển Sequelize instance → object thường
       image: getAvatarURL(banner.image),      // 🖼 Gọi hàm xử lý URL ảnh
     })),
-    currentPage: parseInt(page, 10),
-    totalPages: Math.ceil(totalBanners / pageSize),
-    totalBanners,
+    current_page: parseInt(page, 10),
+    total_page: Math.ceil(totalBanners / pageSize),
+    total: totalBanners,
   });
 }
 

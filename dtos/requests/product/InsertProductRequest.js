@@ -21,6 +21,7 @@ class InsertProductRequest {
     this.quantity = data.quantity;
     this.brand_id = data.brand_id;
     this.category_id = data.category_id;
+    this.attributes = data.attributes;
   }
   static validate(data) {
      const schema = Joi.object({
@@ -34,6 +35,10 @@ class InsertProductRequest {
       quantity: Joi.number().integer().positive().required(), // Thêm .positive()
       brand_id: Joi.number().integer().required(),
       category_id: Joi.number().integer().required(),
+      attributes: Joi.array().items(Joi.object({
+        name: Joi.string().required(),
+        value: Joi.string().required(),
+      })).optional().allow(null),
     });
     return schema.validate(data);//trả về dạng key value
   }

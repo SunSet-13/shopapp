@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'productImages' // alias để sử dụng trong truy vấn
         
       });
+      Product.hasMany(models.ProductAttributeValue, {
+        foreignKey: 'product_id',
+        as: 'attributes' // alias để sử dụng trong truy vấn
+      });
       // Product.hasMany(models.ProductImage, {
       //   foreignKey: 'product_id',
       //   as: 'ProductImages'

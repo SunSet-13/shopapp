@@ -12,6 +12,7 @@ class UpdateProductRequest {
     this.quantity = data.quantity;
     this.brand_id = data.brand_id;
     this.category_id = data.category_id;
+    this.attributes = data.attributes;
   }
 
   static validate(data) {
@@ -27,6 +28,10 @@ class UpdateProductRequest {
       quantity: Joi.number().integer().min(0).optional().allow(null),
       brand_id: Joi.number().integer().optional().allow(null),
       category_id: Joi.number().integer().optional().allow(null),
+      attributes: Joi.array().items(Joi.object({
+        name: Joi.string().required(),
+        value: Joi.string().required(),
+      })).optional().allow(null),
     });
 
     return schema.validate(data, { abortEarly: false });

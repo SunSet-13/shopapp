@@ -29,15 +29,15 @@ export async function getBrand(req, res) {
   ]);
 
   return res.status(200).json({
-  message: "Lấy danh sách thương hiệu thành công",
-  data: brands.map((brand) => ({
-    ...brand.get({ plain: true }),
-    image: getAvatarURL(brand.image),
-  })),
-  current_page: parseInt(page, 10),
-  total_page: Math.ceil(totalCount / pageSize),
- total: totalBrands,
-});
+    message: "Lấy danh sách thương hiệu thành công",
+    data: brands.map((brand) => ({
+      ...brand.get({ plain: true }),
+      image: getAvatarURL(brand.image),
+    })),
+    current_page: parseInt(page, 10),
+    total_page: Math.ceil(totalCount / pageSize),
+    total: totalCount, // Sửa lại từ totalBrands thành totalCount
+  });
 }
 
 export async function getBrandById(req, res) {
@@ -49,25 +49,25 @@ export async function getBrandById(req, res) {
     });
   }
   res.status(200).json({
-  message: "Lấy thông tin thương hiệu thành công",
-  data: {
-    ...brand.get({ plain: true }),
-    image: getAvatarURL(brand.image),
-  },
-});
+    message: "Lấy thông tin thương hiệu thành công",
+    data: {
+      ...brand.get({ plain: true }),
+      image: getAvatarURL(brand.image),
+    },
+  });
 }
 
 export async function insertBrand(req, res) {
   try {
     // Thêm brand mới với dữ liệu từ req.body
     const brand = await db.Brand.create(req.body);
-  res.status(201).json({
-  message: "Thêm thương hiệu thành công",
-  data: {
-    ...brand.get({ plain: true }),
-    image: getAvatarURL(brand.image),
-  },
-});
+    res.status(201).json({
+      message: "Thêm thương hiệu thành công",
+      data: {
+        ...brand.get({ plain: true }),
+        image: getAvatarURL(brand.image),
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: "Lỗi khi thêm thương hiệu",

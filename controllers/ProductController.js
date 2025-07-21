@@ -45,10 +45,22 @@ export async function getProductById(req, res) {
   const { id } = req.params;
 
   const product = await db.Product.findByPk(id, {
-    include: [{
-      model: db.ProductImage,
-      as: 'productImages', // dùng đúng alias đã khai báo trong Product.hasMany
-    }],
+    include: [
+      {
+        model: db.ProductImage,
+        as: 'productImages', // Ảnh sản phẩm liên kết
+      },
+      {
+        model: db.ProductAttributeValue,
+        as: 'attributes', // Thuộc tính động
+        include: [
+          {
+            model: db.Attribute,
+            attributes: ['name'], // Chỉ lấy tên thuộc tính
+          },
+        ],
+      },
+    ],
   });
 
   if (!product) {
@@ -57,85 +69,154 @@ export async function getProductById(req, res) {
     });
   }
 
- return res.status(200).json({
-  message: 'Lấy thông tin sản phẩm thành công',
-  data: {
-    ...product.get({ plain: true }),
-    image: getAvatarURL(product.image),
-  },
-});
-
+  return res.status(200).json({
+    message: 'Lấy thông tin sản phẩm thành công',
+    data: {
+      ...product.get({ plain: true }),
+      image: getAvatarURL(product.image),
+    },
+  });
 }
+
 
 
 
 export async function insertProduct(req, res) {
-  //const userId = req.user.id; 
-  // console.log(JSON.stringify(req.body))
-  const {name} = req.body;
-  const existingProduct = await db.Product.findOne({
-    where: {name}
-  });
-  if(existingProduct) {
+  const { name, attributes = [], ...productData } = req.body;
+
+  // Kiểm tra trùng tên sản phẩm
+  const productExists = await db.Product.findOne({ where: { name } });
+  if (productExists) {
     return res.status(400).json({
-      message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
+      message: 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác',
     });
   }
 
-  const product = await db.Product.create(req.body);
-  return res.status(200).json({
-  message: 'Lấy thông tin sản phẩm thành công',
-  data: {
-    ...product.get({ plain: true }),
-    image: getAvatarURL(product.image),
-  },
-});
+  try {
+    // Tạo sản phẩm mới trong bảng `products`
+    const product = await db.Product.create({ name, ...productData });
 
+    // Duyệt qua từng thuộc tính động
+    for (const attr of attributes) {
+      // Tìm hoặc tạo thuộc tính trong bảng `attributes`
+      const [attribute] = await db.Attribute.findOrCreate({
+        where: { name: attr.name },
+      });
+
+      // Thêm giá trị thuộc tính vào bảng `product_attribute_values`
+      await db.ProductAttributeValue.create({
+        product_id: product.id,
+        attribute_id: attribute.id,
+        value: attr.value,
+      });
+    }
+
+    // Trả về thông tin sản phẩm kèm các thuộc tính động
+    return res.status(201).json({
+      message: 'Thêm mới sản phẩm thành công',
+      data: {
+        ...product.get({ plain: true }),
+        image: getAvatarURL(product.image),
+        attributes: attributes.map(attr => ({
+          name: attr.name,
+          value: attr.value,
+        })),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Đã xảy ra lỗi khi thêm sản phẩm',
+      error: error.message,
+    });
+  }
 }
 
-export async function deleteProduct(req, res) {
+
+
+
+export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
+  // Kiểm tra xem sản phẩm có trong bất kỳ OrderDetail nào không
+  const orderDetailExists = await db.OrderDetail.findOne({
+    where: { product_id: id },
+    include: [
+      {
+        model: db.Order,
+        as: 'Order',
+        attributes: ['id', 'status', 'note', 'total', 'created_at'],
+      },
+    ],
+  });
+
+  if (orderDetailExists) {
+    return res.status(400).json({
+      message: 'Không thể xóa sản phẩm vì đã có đơn hàng tham chiếu đến sản phẩm này',
+      data: orderDetailExists.order,
+    });
+  }
+
+  // Xóa các bản ghi trong bảng `product_attribute_values` liên quan đến sản phẩm
+  await db.ProductAttributeValue.destroy({
+    where: { product_id: id },
+  });
+
+  // Xóa sản phẩm khỏi bảng `products`
   const deleted = await db.Product.destroy({
     where: { id },
   });
 
   if (deleted) {
     return res.status(200).json({
-      message: "Xóa sản phẩm thành công",
+      message: 'Xóa sản phẩm thành công',
+    });
+  } else {
+    return res.status(404).json({
+      message: 'Sản phẩm không tìm thấy',
     });
   }
+};
 
-  return res.status(404).json({
-    message: "Sản phẩm không tìm thấy",
-  });
-}
 
 export async function updateProduct(req, res) {
   const { id } = req.params;
-  const { name } = req.body;
-  if (name !== undefined) {
-    const existingProduct = await db.Product.findOne({
-      where: {
-        name: name,
-        id: { [Op.ne]: id }, // loại trừ chính sản phẩm đang cập nhật
-      },
-    });
+  const { attributes = [], ...productData } = req.body;
 
-    if (existingProduct) {
-      return res.status(400).json({
-        message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác.",
-      });
-    }
-  }
-  // Kiểm tra trùng tên sản phẩm (loại trừ chính nó)
-
-  // Cập nhật sản phẩm nếu tên không bị trùng
-  const updatedProduct = await db.Product.update(req.body, {
+  // Cập nhật thông tin cơ bản của sản phẩm trong bảng `products`
+  const [updatedRowCount] = await db.Product.update(productData, {
     where: { id },
   });
 
-  if (updatedProduct[0] > 0) {
+  if (updatedRowCount > 0) {
+    // Nếu cập nhật thành công, tiến hành cập nhật thuộc tính động
+    for (const attr of attributes) {
+      // Tìm hoặc tạo thuộc tính trong bảng `attributes`
+      const [attribute] = await db.Attribute.findOrCreate({
+        where: { name: attr.name },
+      });
+
+      // Tìm xem thuộc tính đã tồn tại cho sản phẩm chưa
+      const productAttributeValue = await db.ProductAttributeValue.findOne({
+        where: {
+          product_id: id,
+          attribute_id: attribute.id,
+        },
+      });
+
+      if (productAttributeValue) {
+        // Nếu thuộc tính đã tồn tại, cập nhật giá trị
+        await productAttributeValue.update({ value: attr.value });
+      } else {
+        // Nếu chưa tồn tại, thêm mới thuộc tính và giá trị vào bảng `product_attribute_values`
+        await db.ProductAttributeValue.create({
+          product_id: id,
+          attribute_id: attribute.id,
+          value: attr.value,
+        });
+      }
+    }
+
     return res.status(200).json({
       message: "Cập nhật sản phẩm thành công",
     });

@@ -57,8 +57,14 @@ export const getCartBy = async (req, res) => {
         as: "cart_items",
         include: [
           {
-            model: db.Product,
-            as: "product",
+            model: db.ProductVariantValue,
+            as: "productVariant",
+            include: [
+              {
+                model: db.Product,
+                as: "product",
+              },
+            ],
           },
         ],
       },
@@ -88,8 +94,14 @@ export const getCartById = async (req, res) => {
         as: "cart_items",
         include: [
           {
-            model: db.Product,
-            as: "product",
+            model: db.ProductVariantValue,
+            as: "productVariant",
+            include: [
+              {
+                model: db.Product,
+                as: "product",
+              },
+            ],
           },
         ],
       },
@@ -175,8 +187,12 @@ export const checkoutCart = async (req, res) => {
         model: db.CartItem,
         as: "cart_items",
         include: {
-          model: db.Product,
-          as: "product",
+          model: db.ProductVariantValue,
+          as: "productVariant",
+          include: {
+            model: db.Product,
+            as: "product",
+          },
         },
       },
       transaction,
@@ -196,7 +212,7 @@ export const checkoutCart = async (req, res) => {
     let finalTotal = total;
     if (finalTotal == null) {
       finalTotal = cart.cart_items.reduce((sum, item) => {
-        return sum + item.quantity * item.product.price;
+        return sum + item.quantity * item.productVariant.price;
       }, 0);
     }
 
@@ -215,9 +231,9 @@ export const checkoutCart = async (req, res) => {
     // 4. Chuyển cart_items sang order_details
     const orderDetails = cart.cart_items.map((item) => ({
       order_id: order.id,
-      product_id: item.product_id,
+      product_id: item.productVariant.product_id,
       quantity: item.quantity,
-      price: item.product.price,
+      price: item.productVariant.price,
     }));
 
     await db.OrderDetail.bulkCreate(orderDetails, { transaction });

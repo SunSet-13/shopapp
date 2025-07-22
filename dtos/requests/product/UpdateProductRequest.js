@@ -13,6 +13,7 @@ class UpdateProductRequest {
     this.brand_id = data.brand_id;
     this.category_id = data.category_id;
     this.attributes = data.attributes;
+    this.variant_combination = data.variant_combination; // Thêm trường variant_combination
   }
 
   static validate(data) {
@@ -32,6 +33,7 @@ class UpdateProductRequest {
         name: Joi.string().required(),
         value: Joi.string().required(),
       })).optional().allow(null),
+      variant_combination: Joi.any().optional(),
     });
 
     return schema.validate(data, { abortEarly: false });

@@ -7,7 +7,7 @@ class InsertCartRequest {
     static validate(data) {
         const schema = joi.object({
             user_id: joi.number().integer().optional(),
-            session_id: joi.string().required() // ID của phiên làm việc là chuỗi
+            session_id: joi.string().optional() // ID của phiên làm việc là chuỗi
         });
         return schema.validate(data);
     }

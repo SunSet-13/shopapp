@@ -236,7 +236,7 @@ export function routes(app) {
   ); // tạo mới giỏ hàng
   router.post(
     "/carts/checkout",
-    requireRoles([UserRole.USER]), // Chỉ cho phép USER thanh toán giỏ hàng
+    requireRoles([UserRole.USER, UserRole.ADMIN]), // Chỉ cho phép USER thanh toán giỏ hàng
     asyncHandler(CartController.checkoutCart)
   ); // thanh toán giỏ hàng
   router.delete(
@@ -257,7 +257,7 @@ export function routes(app) {
   ); // lấy mục trong giỏ theo id
   router.post(
     "/cart-items",
-    requireRoles([UserRole.USER]), // Chỉ cho phép USER thêm mục vào giỏ hàng của mình
+    requireRoles([UserRole.USER, UserRole.ADMIN]), // Chỉ cho phép USER thêm mục vào giỏ hàng của mình
     validate(InsertCartItemRequest),
     asyncHandler(CartItemController.insertCartItem)
   ); // thêm mới
